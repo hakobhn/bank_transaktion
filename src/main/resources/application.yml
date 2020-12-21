@@ -62,9 +62,3 @@ login:
 jasypt:
   encryptor:
     algorithm: PBEWithMD5AndDES
-
-bank-account:
-  currency:
-    - EURO
-    - USD
-    - GBP

@@ -21,16 +21,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping(value = {"/", "/dashboard"})
-public class DashboardController {
+public class DashboardController extends AbstractController {
 
     @Autowired
     private AccountService accountService;
 
+    @Override
+    public SectionInfo section() {
+        section.setAdmin(accountService.isAdmin());
+        section.setDescription("Dashboard");
+        return section;
+    }
+
     @GetMapping
     public String dashboard(Model model) {
-        SectionInfo section = new SectionInfo();
-        section.setDescription("Dashboard");
-        model.addAttribute("section", section);
         String dashboard = "";
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

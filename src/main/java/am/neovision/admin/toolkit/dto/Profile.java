@@ -7,5 +7,5 @@ public class Profile {
     private String fullName;
     private String avatar;
     private String email;
-    private String bio;
+    private Currency currency;
 }

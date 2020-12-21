@@ -38,7 +38,7 @@ function initAccounts() {
                         '      <img class="img-circle img-bordered-lg elevation-3" src="' + row['avatar'] + '" alt="' + row['email'] + '">\n' +
                         '      <span class="username">\n' +
                         '          <a href="';
-                    result += row['id'] == 'unknown' ? 'javascript: void(0);' : '/accounts/profile/'+row['id'];
+                    result += row['id'] == 'unknown' ? 'javascript: void(0);' : '/accounts/profile/'+row['uuid'];
                     result += '">'+ cleanText(row['firstName'] + ' ' + row['lastName']) + '</a>\n' +
                         '      </span>\n' +
                         '      <span class="description font-weight-bold">' + row['email'] + '</span>\n' +
@@ -65,7 +65,7 @@ function initAccounts() {
                 }
             },
             {
-                "data": "id",
+                "data": "uuid",
                 "name": "",
                 "title": "",
                 "width": "13%",
@@ -75,7 +75,7 @@ function initAccounts() {
                     let result = '';
                         result = '<div class="form-group">\n' +
                             '   <div>\n' +
-                            '       <a class="btn btn-primary btn-sm" href="/accounts/edit/'+ row["id"]+'">' +
+                            '       <a class="btn btn-primary btn-sm" href="/accounts/edit/'+ row["uuid"]+'">' +
                             '           <i class="fas fa-edit"></i> Edit\n' +
                             '       </a>\n' +
                             '       <a class="btn btn-danger btn-sm" href="#" onclick="deleteAccount(\'' + data + '\')">' +

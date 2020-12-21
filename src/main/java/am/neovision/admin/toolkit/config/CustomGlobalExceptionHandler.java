@@ -17,21 +17,21 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({NotFoundException.class})
-    public ResponseEntity<ApiResponse> handleNotFound(Exception ex, WebRequest request) {
-        return new ResponseEntity(new ApiResponse(false, ex.getLocalizedMessage()),
-                HttpStatus.NOT_FOUND);
-    }
+//    @ExceptionHandler({NotFoundException.class})
+//    public ResponseEntity<ApiResponse> handleNotFound(Exception ex, WebRequest request) {
+//        return new ResponseEntity(new ApiResponse(false, ex.getLocalizedMessage()),
+//                HttpStatus.NOT_FOUND);
+//    }
 
-    @ExceptionHandler({PermissionDenied.class})
-    public ResponseEntity<ApiResponse> handlePermissionDenied(Exception ex, WebRequest request) {
-        return new ResponseEntity(new ApiResponse(false, ex.getLocalizedMessage()),
-                HttpStatus.FORBIDDEN);
-    }
+//    @ExceptionHandler({PermissionDenied.class})
+//    public ResponseEntity<ApiResponse> handlePermissionDenied(Exception ex, WebRequest request) {
+//        return new ResponseEntity(new ApiResponse(false, ex.getLocalizedMessage()),
+//                HttpStatus.FORBIDDEN);
+//    }
 
-    @ExceptionHandler({RuntimeException.class})
-    public ResponseEntity<ApiResponse> handleProcessFailed(Exception ex, WebRequest request) {
-        return new ResponseEntity(new ApiResponse(false, ex.getLocalizedMessage()),
-                HttpStatus.BAD_REQUEST);
-    }
+//    @ExceptionHandler({RuntimeException.class})
+//    public ResponseEntity<ApiResponse> handleProcessFailed(Exception ex, WebRequest request) {
+//        return new ResponseEntity(new ApiResponse(false, ex.getLocalizedMessage()),
+//                HttpStatus.BAD_REQUEST);
+//    }
 }

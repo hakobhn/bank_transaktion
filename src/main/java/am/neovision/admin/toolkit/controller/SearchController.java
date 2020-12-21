@@ -12,14 +12,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping("search")
-public class SearchController {
+public class SearchController extends AbstractController {
+
+    @Override
+    public SectionInfo section() {
+        section.setTitle("Dashboard");
+        section.setDescription("Dashboard");
+        return section;
+    }
 
     @PostMapping()
     public String search(Term term, Model model) {
-        SectionInfo section = new SectionInfo();
-        section.setTitle("Dashboard");
-        section.setDescription("Dashboard");
-        model.addAttribute("section", section);
 
         model.addAttribute("term", term.getValue());
 

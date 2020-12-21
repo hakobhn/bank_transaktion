@@ -6,7 +6,8 @@
 package am.neovision.admin.toolkit.domain.model;
 
 import am.neovision.admin.toolkit.domain.AbstractModel;
-import am.neovision.admin.toolkit.dto.GenderEnum;
+import am.neovision.admin.toolkit.dto.Currency;
+import am.neovision.admin.toolkit.dto.Gender;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -40,9 +41,14 @@ public class Account extends AbstractModel<Long> {
     @NotBlank
     @Size(min = 3, max = 32)
     private String lastName;
+
     private String avatar;
 
+    @Column(columnDefinition = "enum('EURO','USD', 'GPB')")
     @Enumerated(EnumType.STRING)
-    @Column(name = "GENDER", columnDefinition="ENUM('M','F')")
-    private GenderEnum gender;
+    private Currency currency;
+
+    @Column(columnDefinition = "enum('MALE','FEMALE')")
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 }

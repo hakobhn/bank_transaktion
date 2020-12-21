@@ -1,6 +1,5 @@
 package am.neovision.admin.toolkit.config;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -11,9 +10,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @EnableWebMvc
 @Configuration
 @ComponentScan("am.neovision.admin.toolkit")
@@ -21,12 +17,6 @@ import java.util.List;
 public class MvcConfig implements WebMvcConfigurer {
 
     private final long MAX_AGE_SECS = 3600;
-
-    @Bean(name = "currencies")
-    @ConfigurationProperties(prefix = "bank-account.currency")
-    public List<String> currencies() {
-        return new ArrayList<>();
-    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {

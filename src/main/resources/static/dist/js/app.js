@@ -158,7 +158,7 @@ function printAccount(account, performDate) {
         '      <img class="img-circle img-bordered-sm" src="' + account['avatar'] + '" alt="' + account['email'] + '">\n' +
         '      <span class="username">\n' +
         '          <a href="';
-    result += account['uuid'] == 'unknown'?'javascript: void(0);':'/accounts/profile/'+account['id'];
+    result += account['uuid'] == 'unknown'?'javascript: void(0);':'/accounts/profile/'+account['uuid'];
     result += '">' + cleanText(account['firstName'] + ' ' + account['lastName']) +
         '</a>\n'+
         '      </span>\n';

@@ -60,40 +60,15 @@ public class AccountService extends AbstractService<Account, AccountDto> impleme
     }
 
     public AccountDto add(AccountAdd accountAdd) {
-        if (!accountAdd.getPassword().equals(accountAdd.getRePassword())) {
-            throw new RuntimeException("Passwords do not match");
-        }
-        if (accountAdd.getEmail().equalsIgnoreCase(rootEmail)) {
-            throw new RuntimeException("Provided email address is already being used");
-        }
-        Optional.ofNullable(findByEmail(accountAdd.getEmail()))
-                .ifPresent(usr -> {
-                            throw new RuntimeException("Provided email address is already being used");
-                        }
-                );
-        Account user = new Account();
-        BeanUtils.copyProperties(accountAdd, user);
-        user.setUuid(StringUtil.generateUUID());
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        return save(user);
+        Account account = new Account();
+        BeanUtils.copyProperties(accountAdd, account);
+        account.setUuid(StringUtil.generateUUID());
+        account.setPassword(bCryptPasswordEncoder.encode(account.getPassword()));
+        return save(account);
     }
 
     public AccountDto edit(AccountAdd accountAdd) {
-        if (!accountAdd.getPassword().equals(accountAdd.getRePassword())) {
-            throw new RuntimeException("Passwords do not match");
-        }
-        if (accountAdd.getEmail().equalsIgnoreCase(rootEmail)) {
-            throw new RuntimeException("Provided email address is already being used");
-        }
-        String uuid = Optional.ofNullable(findByEmail(accountAdd.getEmail()))
-                .map(usr -> {
-                            if (!usr.getUuid().equals(accountAdd.getUuid())) {
-                                throw new RuntimeException("Provided email address is already being used");
-                            }
-                            return usr.getUuid();
-                        }
-                ).orElseThrow(NotFoundException::new);
-        Account account = accountRepository.findByUuid(uuid).get();
+        Account account = accountRepository.findByUuid(accountAdd.getUuid()).orElseThrow(NotFoundException::new);
         BeanUtils.copyProperties(accountAdd, account);
         account.setPassword(bCryptPasswordEncoder.encode(account.getPassword()));
         return save(account);
@@ -101,7 +76,7 @@ public class AccountService extends AbstractService<Account, AccountDto> impleme
 
     public AccountDto getCurrentAccount() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return Optional.ofNullable(findByEmail(auth.getName())).orElseThrow(NotFoundException::new);
+        return Optional.ofNullable(findByEmail(auth.getName())).orElse(null);
     }
 
     public AccountDto findByEmail(String email) {
@@ -125,12 +100,14 @@ public class AccountService extends AbstractService<Account, AccountDto> impleme
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         UserDetails principal = accountRepository.findByEmail(email)
                 .map(
-                        account -> buildUserForAuthentication(account.getEmail(), account.getPassword(), List.of(new SimpleGrantedAuthority("USER")))
+                        account -> buildUserForAuthentication(account.getEmail(), account.getPassword(),
+                                List.of(new SimpleGrantedAuthority("ADMIN")))
                 )
                 .orElseGet(
                     () -> {
-                        if (email.equalsIgnoreCase(rootEmail)) {
-                            return buildUserForAuthentication(rootEmail, rootPassword, List.of(new SimpleGrantedAuthority("ADMIN")));
+                        if (email.equals(rootEmail)) {
+                            return buildUserForAuthentication(rootEmail, bCryptPasswordEncoder.encode(rootPassword),
+                                    List.of(new SimpleGrantedAuthority("ADMIN")));
                         } else {
                             throw new UsernameNotFoundException("Email not found");
                         }
@@ -142,6 +119,10 @@ public class AccountService extends AbstractService<Account, AccountDto> impleme
     }
 
     private UserDetails buildUserForAuthentication(String email, String password, List<GrantedAuthority> authorities) {
-        return new org.springframework.security.core.userdetails.User(email, bCryptPasswordEncoder.encode(password), authorities);
+        return new org.springframework.security.core.userdetails.User(email, password, authorities);
+    }
+
+    public boolean isAdmin() {
+        return getCurrentAccount() == null;
     }
 }

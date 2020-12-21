@@ -4,18 +4,12 @@
     <include
             resource="org/springframework/boot/logging/logback/defaults.xml" />
 
-    <springProperty scope="context" name="springAppName" source="application.instance.name"/>
-
-    <!--	<property name="CONSOLE_LOG_PATTERN"-->
-    <!--			  value="%d{yyyy-MM-dd HH:mm:ss.SSS}%d{Z}|severity=%level|pid=${PID:-}|service=${application_name}|trace=%X{X-B3-TraceId}|span=%X{X-B3-SpanId}|thread=%t|class=%c{40}|message=%replace(%msg){'\n', '\t'}%n" />-->
-
-    <property name="CONSOLE_LOG_PATTERN"
-              value="%d{yyyy-MM-dd HH:mm:ss.SSS}%d{Z}|severity=%level|pid=${PID:-}|thread=%t|class=%c{10}|message=%replace(%msg){'\n', '\t'}%n" />
-
-    <appender name="jsonConsoleAppender"
+    <appender name="CONSOLE"
               class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
-            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <Pattern>
+                %black(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %yellow(%C{1.}): %msg%n%throwable
+            </Pattern>
         </layout>
     </appender>
 
@@ -26,7 +20,7 @@
             <fileNamePattern>./logs/app.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <!-- each archived file, size max 10MB -->
             <maxFileSize>10MB</maxFileSize>
-            <!-- total size of all archive files, if total size > 20GB, it will delete old archived file -->
+            <!-- total size of all archive files, if total size > 2GB, it will delete old archived file -->
             <totalSizeCap>2GB</totalSizeCap>
             <!-- 60 days to keep -->
             <maxHistory>60</maxHistory>
@@ -37,36 +31,18 @@
         </encoder>
     </appender>
 
-    <appender name="Async-Console-Appender"
-              class="ch.qos.logback.classic.AsyncAppender">
-        <queueSize>512</queueSize>
-        <appender-ref ref="jsonConsoleAppender" />
-    </appender>
 
-    <logger name="org.springframework" level="WARN"
-            additivity="false">
-        <appender-ref ref="Async-Console-Appender" />
-    </logger>
-
-    <logger name="org.springframework.web" level="TRACE" additivity="false">
-        <appender-ref ref="Async-Console-Appender" />
-    </logger>
-
-    <logger name="logging.level.org.hibernate.SQL" level="TRACE" additivity="false">
-        <appender-ref ref="Async-Console-Appender" />
-    </logger>
-
-<!--    <logger name="org.apache" level="TRACE"	additivity="false">-->
-<!--        <appender-ref ref="Async-Console-Appender" />-->
-<!--    </logger>-->
-
-    <logger name="am.neovision.admin.toolkit" level="debug" additivity="false">
-        <appender-ref ref="Async-Console-Appender" />
-    </logger>
-
-    <root level="INFO">
-        <appender-ref ref="Async-Console-Appender" />
+    <!-- LOG everything at INFO level -->
+    <root level="info">
+        <appender-ref ref="FILE-ROLLING" />
+        <appender-ref ref="CONSOLE" />
     </root>
+
+    <!-- LOG "com.baeldung*" at TRACE level -->
+    <logger name="am.neovision.admin.toolkit" level="trace" additivity="false">
+        <appender-ref ref="FILE-ROLLING" />
+        <appender-ref ref="CONSOLE" />
+    </logger>
 
 
 </configuration>

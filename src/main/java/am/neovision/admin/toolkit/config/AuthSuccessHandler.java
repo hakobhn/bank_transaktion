@@ -7,7 +7,7 @@ package am.neovision.admin.toolkit.config;
 
 import am.neovision.admin.toolkit.domain.repository.AccountRepository;
 import am.neovision.admin.toolkit.dto.AccountInfo;
-import am.neovision.admin.toolkit.dto.GenderEnum;
+import am.neovision.admin.toolkit.dto.Gender;
 import am.neovision.admin.toolkit.service.LoginAttemptService;
 import am.neovision.admin.toolkit.util.RequestUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -55,16 +55,15 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
                     if (StringUtils.isBlank(avatar)) {
                         avatar = Optional.ofNullable(account.getGender())
                                 .map(gender -> {
-                                    if (gender.equals(GenderEnum.FEMALE)) {
+                                    if (gender.equals(Gender.FEMALE)) {
                                         return "/dist/img/avatar-female.jpg";
                                     } else {
                                         return "/dist/img/avatar-male.jpg";
                                     }
                                 }).get();
                     }
-                    session.setAttribute("account", AccountInfo.builder()
-                            .fullName(account.getFirstName() + " " + account.getLastName())
-                            .avatar(avatar).build());
+                    session.setAttribute("account",
+                            new AccountInfo(account.getUuid(), account.getFirstName() + " " + account.getLastName(), avatar));
                 }
         );
         if (authentication.getAuthorities().isEmpty()) {

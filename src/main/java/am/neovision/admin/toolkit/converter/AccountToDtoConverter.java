@@ -2,7 +2,7 @@ package am.neovision.admin.toolkit.converter;
 
 import am.neovision.admin.toolkit.domain.model.Account;
 import am.neovision.admin.toolkit.dto.AccountDto;
-import am.neovision.admin.toolkit.dto.GenderEnum;
+import am.neovision.admin.toolkit.dto.Gender;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
@@ -20,7 +20,7 @@ public class AccountToDtoConverter implements Converter<Account, AccountDto> {
         if (StringUtils.isNoneBlank(account.getAvatar())) {
             accountDto.setAvatar(account.getAvatar());
         } else {
-            if (account.getGender() != null && account.getGender().equals(GenderEnum.FEMALE)) {
+            if (account.getGender() != null && account.getGender().equals(Gender.FEMALE)) {
                 accountDto.setAvatar("/dist/img/avatar-female.jpg");
             } else {
                 accountDto.setAvatar("/dist/img/avatar-male.jpg");

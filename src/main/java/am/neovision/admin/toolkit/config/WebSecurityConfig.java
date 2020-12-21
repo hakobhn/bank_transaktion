@@ -8,12 +8,15 @@ package am.neovision.admin.toolkit.config;
 import am.neovision.admin.toolkit.service.impl.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -43,7 +46,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.authenticationProvider(customAuthenticationProvider);
         auth
                 .userDetailsService(accountService)
                 .passwordEncoder(bCryptPasswordEncoder);
@@ -72,7 +74,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/favicon.ico").permitAll()
                 .antMatchers("/").hasAnyAuthority("ADMIN", "USER")
                 .antMatchers("/dashboard").hasAnyAuthority("ADMIN", "USER")
-                .antMatchers("/accounts/profile/me").hasAnyAuthority("ADMIN", "USER")
+                .antMatchers("/accounts/profile").hasAnyAuthority("ADMIN", "USER")
                 .antMatchers("/accounts/**").hasAnyAuthority("ADMIN")
                 .anyRequest()
                 .authenticated().and()
@@ -98,12 +100,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     public CustomAuthenticationFilter authenticationFilter() throws Exception {
-        CustomAuthenticationFilter authenticationFilter = new CustomAuthenticationFilter(rootEmail, rootPassword);
+        CustomAuthenticationFilter authenticationFilter = new CustomAuthenticationFilter();
         authenticationFilter.setAuthenticationSuccessHandler(successHandler);
         authenticationFilter.setAuthenticationFailureHandler(failureHandler);
         authenticationFilter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/login", "POST"));
         authenticationFilter.setAuthenticationManager(authenticationManagerBean());
         return authenticationFilter;
+    }
+
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider authProvider
+                = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(accountService);
+        authProvider.setPasswordEncoder(bCryptPasswordEncoder);
+        return authProvider;
     }
 
 }
