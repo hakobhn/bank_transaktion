@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/bank_transaction?useSSL=false
+    username: root
+    password: ENC(HIxhyytc9QoyOLKj+25p/A==)
+
+#Admin app admin user credentials
+root:
+  email: admin.bank_transaction@neovision.am
+  password: ENC(HIxhyytc9QoyOLKj+25p/A==)
+
+jasypt:
+  encryptor:
+    password: secret

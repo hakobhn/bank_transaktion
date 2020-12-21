@@ -1,0 +1,145 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring3-3.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Bank Admin | Sign Up</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon">
+
+    <!-- App styles -->
+    <link rel="stylesheet" th:href="@{/dist/css/app.css}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" th:href="@{/plugins/fontawesome-free/css/all.min.css}">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- icheck bootstrap -->
+    <link rel="stylesheet" th:href="@{/plugins/icheck-bootstrap/icheck-bootstrap.min.css}">
+    <!-- Theme style -->
+    <link rel="stylesheet" th:href="@{/dist/css/adminlte.min.css}">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<body class="hold-transition register-page">
+<div class="register-box">
+    <div class="register-logo">
+        <a th:href="@{/}"><b>Bank</b>Admin</a>
+    </div>
+
+    <div class="card">
+        <div class="card-body register-card-body">
+            <p class="login-box-msg">Register a new membership</p>
+
+            <form th:action="@{/signup}" method="post" data-toggle="validator" role="form" th:object="${user}">
+                <div class="input-group mb-3">
+                    <input required="true" type="text" th:field="*{firstName}" th:classappend="${#fields.hasErrors('firstName')} ? 'is-invalid' : ''"
+                           class="form-control" placeholder="First name">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-user"></span>
+                        </div>
+                    </div>
+                    <span class="error text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First name error</span>
+                </div>
+                <div class="input-group mb-3">
+                    <input required="true" type="text" th:field="*{lastName}" th:classappend="${#fields.hasErrors('lastName')} ? 'is-invalid' : ''"
+                           class="form-control" placeholder="Last name">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-user"></span>
+                        </div>
+                    </div>
+                    <span class="error text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last name error</span>
+                </div>
+                <div class="input-group mb-3">
+                    <input required="true" type="text" th:field="*{email}" th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''"
+                           class="form-control" placeholder="Email">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-envelope"></span>
+                        </div>
+                    </div>
+                    <span class="error text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</span>
+                </div>
+                <div class="input-group mb-3">
+                    <input required="true" type="password" th:field="*{password}" th:classappend="${#fields.hasErrors('password')} ? 'is-invalid' : ''"
+                           class="form-control" placeholder="Password">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                    <span class="error text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</span>
+                </div>
+                <div class="input-group mb-3">
+                    <input required="true" type="password" th:field="*{rePassword}" th:classappend="${#fields.hasErrors('rePassword')} ? 'is-invalid' : ''"
+                           class="form-control" placeholder="Retype password">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                    <span class="error text-danger" th:if="${#fields.hasErrors('rePassword')}" th:errors="*{rePassword}">Confirm password error</span>
+                </div>
+                <div class="input-group mb-3">
+                    <img class="captcha_img" id="captcha_img" src="/captcha" />
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span id="captcha_refresh" class="fas fa-redo"></span>
+                        </div>
+                    </div>
+                    <input type="text" required="true" th:field="*{captcha}" th:classappend="${#fields.hasErrors('captcha')} ? 'is-invalid' : ''"
+                           class="form-control" placeholder="Captcha">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-user-secret"></span>
+                        </div>
+                    </div>
+                    <span class="error text-danger" th:if="${#fields.hasErrors('captcha')}" th:errors="*{captcha}">Captcha error</span>
+                </div>
+                <div class="row">
+                    <div class="col-8">
+                        <div class="icheck-primary">
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-primary btn-block">Register</button>
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </form>
+
+            <a th:href="@{/login}" class="text-center">I already have a membership</a>
+        </div>
+        <!-- /.form-box -->
+    </div><!-- /.card -->
+</div>
+<!-- /.register-box -->
+
+<!-- jQuery -->
+<script th:src="@{/plugins/jquery/jquery.min.js}"></script>
+<!-- Bootstrap 4 -->
+<script th:src="@{/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!-- AdminLTE App -->
+<script th:src="@{/dist/js/adminlte.min.js}"></script>
+
+<script th:inline="javascript">
+    $(document).on("click", "#captcha_refresh", function(e) {
+        $.ajax({
+            url: "/captcha",
+            success: function (data) {
+                let d = new Date();
+                $("#captcha_img").attr("src", "/captcha?"+d.getTime());
+            },
+            error: function (xhr, status, err) {
+                showError('Delete user failed.', "Error received", JSON.parse(xhr.responseText).message);
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

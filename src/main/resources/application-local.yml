@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/bank_transaction?useSSL=false
+    username: root
+    password: ENC(HIxhyytc9QoyOLKj+25p/A==)
+
+#Admin app admin user credentials
+root:
+  email: root.mongoadmin@polixis.com
+  password: ENC(Mj3KG0Sy88eEmxcgxUUflByvsFSz8Hn+)
+
+jasypt:
+  encryptor:
+    password: secret

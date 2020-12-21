@@ -1,0 +1,105 @@
+.nav-sidebar > .nav-item .nav-icon {
+    text-align: left;
+}
+
+.fa-databases {
+    background-image: url(/dist/img/icons/databases_grey.png);
+    background-repeat: no-repeat !important;
+    background-position: top left !important;
+    background-size: contain;
+    padding: 10px 0px 10px 0px;
+    margin: 0px 0px -3px 0px;
+}
+
+.active > .fa-databases {
+    background-image: url(/dist/img/icons/databases_white.png);
+}
+
+.nav-link:hover > .fa-databases {
+    background-image: url(/dist/img/icons/databases_white.png);
+}
+
+.fa-mapping {
+    background-image: url(/dist/img/icons/mapping_grey.png);
+    background-repeat: no-repeat !important;
+    background-position: top left !important;
+    background-size: contain;
+    padding: 10px 0px 10px 0px;
+    margin: 0px 0px -3px 0px;
+}
+
+.active > .fa-mapping {
+    background-image: url(/dist/img/icons/mapping_white.png);
+}
+
+.nav-link:hover > .fa-mapping {
+    background-image: url(/dist/img/icons/mapping_white.png);
+}
+
+/*.nav-tabs li a {*/
+/*    color: #495057;*/
+/*}*/
+
+.nav-tabs li a.active {
+    color: #007bff !important;
+}
+
+.nav-tabs li a.active {
+    border-top: 4px solid #007bff !important;
+}
+
+.nav-tabs li a.active h5{
+    font-weight: 700;
+    font-size: 17pt;
+}
+
+.invalid-input-msg {
+    display: none;
+    width: 100%;
+    margin-top: .25rem;
+    font-size: 80%;
+    color: #dc3545;
+}
+
+.small-box-footer {
+    padding: 15px !important;
+}
+
+.profile-user-img {
+    max-width: 90px;
+    height: 90px;
+}
+
+.user-panel img {
+    width: 2.1rem !important;
+    height: 2.1rem !important;
+}
+
+.captcha_img {
+    max-height: 37px;
+    width: 100px;
+}
+
+#captcha_refresh {
+    cursor: pointer;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    color: black !important;
+}
+
+.select2-container .select2-selection--single {
+    height: 40px !important;
+}
+
+.truncate {
+    display: block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-height: 3.6em;
+}
+
+td.db-data {
+    padding: 0;
+    border: 0;
+}

@@ -1,0 +1,101 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout">
+<head>
+    <title>Profile</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+
+                <!-- Profile Image -->
+                <div class="card card-primary card-outline">
+                    <div class="card-body box-profile">
+                        <div class="text-center">
+                            <img class="profile-user-img img-fluid img-circle"
+                                 th:src="@{${profile.avatar}}"
+                                 alt="User profile picture">
+                        </div>
+
+                        <h3 class="profile-username text-center" th:text="${profile.fullName}">Full Name</h3>
+
+                        <p class="text-muted text-center" th:if="${profile.lastLoggedIn != null}"
+                           th:utext='${"<small>Last visited</small> " + profile.lastLoggedIn}'>
+                        </p>
+                        <p class="text-muted text-center" th:if="${profile.lastLoggedIn == null}">Not logged in yet</p>
+
+                        <a th:if="${ownProfile}" th:href="@{/logout}"
+                           class="btn btn-primary btn-block"><b>Logout</b></a>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+
+            <div class="col-md-9">
+                <!-- About Me Box -->
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 th:if="${ownProfile}" class="card-title">My profile details</h3>
+                        <h3 th:if="${!ownProfile}" class="card-title">Profile details</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <strong><i class="fas fa-id-card mr-1"></i> Position</strong>
+                                <p class="text-muted" th:text="${profile.position}"> Position</p>
+                                <hr>
+                                <strong><i class="fas fa-envelope mr-1"></i> Email</strong>
+                                <p class="text-muted" th:text="${profile.email}">Email</p>
+                                <hr>
+                                <strong><i class="fas fa-phone mr-1"></i> Phone</strong>
+                                <p class="text-muted" th:text="${profile.phone}">Phone</p>
+                                <hr>
+                                <strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
+                                <p class="text-muted" th:text="${profile.location}">Locations</p>
+                                <hr>
+                                <strong><i class="fas fa-pencil-ruler mr-1"></i> Professional Skills</strong>
+                                <p class="text-muted">
+                                <span class="badge badge-primary mr-1" th:each="skill : ${profile.professionalSkills}"
+                                      th:text="${skill}">Skill</span>
+                                </p>
+                                <hr>
+                                <strong><i class="fas fa-pencil-alt mr-1"></i> Soft Skills</strong>
+                                <p class="text-muted">
+                                <span class="badge badge-info mr-1" th:each="skill : ${profile.softSkills}"
+                                      th:text="${skill}">Skill</span>
+                                </p>
+                                <hr>
+                                <strong><i class="fas fa-language mr-1"></i> Languages</strong>
+                                <p class="text-muted">
+                                <span class="badge badge-warning mr-1" th:each="language : ${profile.languages}"
+                                      th:text="${language}">Language</span>
+                                </p>
+                                <hr>
+                                <strong><i class="fas fa-calendar mr-1"></i> Haired</strong>
+                                <p class="text-muted" th:text="${profile.hireDate}">
+                                    Haired at
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <strong><i class="fas fa-book mr-1"></i> Bio</strong>
+                                <p class="text-muted" th:text="${profile.bio}">
+                                    Bio
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+</body>
+</html>

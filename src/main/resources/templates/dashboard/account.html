@@ -1,0 +1,31 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout">
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+<div class="content" layout:fragment="content">
+    <div class="container-fluid">
+        <div class="row grid-content">
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-primary">
+                    <div class="inner">
+                        <h3>Transactions</h3>
+
+                        <p>Management</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-soup-can"></i>
+                    </div>
+                    <a th:href="@{/management/datasources}" class="small-box-footer">Open section <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</div>
+</body>
+</html>

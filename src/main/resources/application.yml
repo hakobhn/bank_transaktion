@@ -1,0 +1,70 @@
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+      dialect: MySQL5Dialect
+    datasource:
+      driverClassName: com.mysql.cj.jdbc.Driver
+  thymeleaf:
+    cache: false
+    check-template: true
+    check-template-location: true
+    enabled: true
+    encoding: UTF-8
+    mode: HTML
+    prefix: classpath:/templates/
+    suffix: .html
+    servlet:
+      content-type: text/html
+  devtools:
+    livereload:
+      enabled: true
+    add-properties: true
+  resources:
+    static-locations: file:src/main/resources/static/
+    cache:
+      period: 0
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+      enabled: true
+      location: ${java.io.tmpdir}
+  session:
+    store-type: jdbc
+
+#We can use the httpOnly and secure flags to secure our session cookie:
+#
+#httpOnly: if true then browser script won't be able to access the cookie
+#secure: if true then the cookie will be sent only over HTTPS connection
+server:
+  port: 8090
+  compression:
+    enabled: true
+  error:
+    whitelabel:
+      enabled: false
+  servlet:
+    session:
+      cookie:
+        http-only: true
+#        secure: true
+
+# 1 days = 1 * 24 * 60 * 60
+cookie:
+  maxAge: 86400
+
+login:
+  fail:
+    max-attempt: 2
+
+jasypt:
+  encryptor:
+    algorithm: PBEWithMD5AndDES
+
+bank-account:
+  currency:
+    - EURO
+    - USD
+    - GBP

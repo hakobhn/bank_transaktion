@@ -1,0 +1,251 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout">
+<head>
+    <title th:text='${action +" account"}'></title>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <!-- daterange picker -->
+    <link rel="stylesheet" th:href="@{/plugins/daterangepicker/daterangepicker.css}">
+    <!-- Select2 -->
+    <link rel="stylesheet" th:href="@{/plugins/select2/css/select2.min.css}">
+
+    <div class="container-fluid">
+        <form class="row mb-2" data-toggle="validator" role="form" th:object="${account}" th:action="@{/accounts/save}"
+              autocomplete="off" method="post">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="box-body">
+                            <input type="hidden" th:field="*{uuid}"/>
+
+                            <div class="form-group">
+                                <label for="Firstname">First name</label>
+                                <input type="text" required="true" th:classappend="${#fields.hasErrors('firstName')} ? 'is-invalid' : ''"
+                                       class="form-control" th:field="*{firstName}"
+                                       id="firstname"/>
+                                <span class="error text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First name error</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="Lastname">Last name</label>
+                                <input type="text" required="true" th:classappend="${#fields.hasErrors('firstName')} ? 'is-invalid' : ''"
+                                       class="form-control" th:field="*{lastName}"
+                                       id="lastname"/>
+                                <span class="error text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last name error</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">E-mail</label>
+                                <input type="email" required="true" th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''"
+                                       class="form-control"
+                                       th:field="*{email}"
+                                       th:readonly="${!ownProfile && action.equalsIgnoreCase('edit')}"
+                                       id="email"/>
+                                <span class="error text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" required="true" th:classappend="${#fields.hasErrors('password')} ? 'is-invalid' : ''"
+                                       class="form-control"
+                                       th:field="*{password}"
+                                       th:readonly="${!ownProfile && action.equalsIgnoreCase('edit')}"
+                                       id="password"/>
+                                <span class="error text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                </div>
+                                <input type="text" th:classappend="${#fields.hasErrors('phone')} ? 'is-invalid' : ''"
+                                       class="form-control"
+                                       th:field="*{phone}" id="phone"
+                                       data-inputmask='"mask": "(999) 999-999"' data-mask>
+                                <span class="error text-danger" th:if="${#fields.hasErrors('phone')}"
+                                      th:errors="*{phone}">Phone error</span>
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                        <div class="form-group">
+                            <label for="location">Location</label>
+                            <select th:field="*{location}" id="location" data-placeholder="Select a Location"
+                                    th:classappend="${#fields.hasErrors('location')} ? 'is-invalid' : ''"
+                                    class="form-control select2" style="width: 100%;">
+                                <option value="">Select a Location</option>
+                                <option th:each="location : ${locationList}"
+                                        th:field="*{location}"
+                                        th:value="${location}"
+                                        th:text="${location}">Position</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <span class="error text-danger" th:if="${#fields.hasErrors('location')}"
+                                  th:errors="*{location}">Location error</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="position">Position</label>
+                            <select th:field="*{position}" id="position" data-placeholder="Select a Position"
+                                    th:classappend="${#fields.hasErrors('position')} ? 'is-invalid' : ''"
+                                    class="form-control select2" style="width: 100%;">
+                                <option value="">Select a Position</option>
+                                <option th:each="position : ${positionList}"
+                                        th:field="*{position}"
+                                        th:value="${position}"
+                                        th:text="${position}">Position</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <span class="error text-danger" th:if="${#fields.hasErrors('position')}"
+                                  th:errors="*{position}">Position error</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="languages">Languages</label>
+                            <select th:field="*{languages}" id="languages" multiple="multiple" data-placeholder="Select a Language"
+                                    th:classappend="${#fields.hasErrors('languages')} ? 'is-invalid' : ''"
+                                    class="form-control select2" style="width: 100%;">
+                                <option value="">Select a Language</option>
+                                <option th:each="language : ${languagesList}"
+                                        th:field="*{languages}"
+                                        th:value="${language}"
+                                        th:text="${language}">Language</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <span class="error text-danger" th:if="${#fields.hasErrors('languages')}"
+                                  th:errors="*{languages}">Language error</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label for="avatar">Avatar</label>
+                                <input type="text" th:classappend="${#fields.hasErrors('avatar')} ? 'is-invalid' : ''"
+                                       class="form-control" th:field="*{avatar}" autocomplete="" placeholder="Url" id="avatar"/>
+                                <span class="error text-danger" th:if="${#fields.hasErrors('avatar')}"
+                                      th:errors="*{avatar}">Avatar error</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="roles">Roles</label>
+                                <select th:field="*{roles}" id="roles" th:classappend="${#fields.hasErrors('roles')} ? 'is-invalid' : ''"
+                                        class="form-control" required="true" multiple="multiple">
+                                    <option th:each="role : ${roleList}"
+                                            th:field="*{roles}"
+                                            th:value="${role.role}"
+                                            th:text="${role.role}">Role</option>
+                                </select>
+                                <span class="error text-danger" th:if="${#fields.hasErrors('roles')}"
+                                      th:errors="*{roles}">Roles error</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="professional_skills">Professional Skills</label>
+                                <select th:field="*{professionalSkills}" id="professional_skills" multiple="multiple" data-placeholder="Select a Skill"
+                                        th:classappend="${#fields.hasErrors('professionalSkills')} ? 'is-invalid' : ''"
+                                        class="form-control select2" style="width: 100%;">
+                                    <option value="">Select a Skill</option>
+                                    <option th:each="skill : ${professionalSkillList}"
+                                            th:field="*{professionalSkills}"
+                                            th:value="${skill}"
+                                            th:text="${skill}">Skill</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <span class="error text-danger" th:if="${#fields.hasErrors('professionalSkills')}"
+                                      th:errors="*{professionalSkills}">Professional skills error</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="soft_skills">Soft Skills</label>
+                                <select th:field="*{softSkills}" id="soft_skills" multiple="multiple" data-placeholder="Select a Skill"
+                                        th:classappend="${#fields.hasErrors('softSkills')} ? 'is-invalid' : ''"
+                                        class="form-control select2" style="width: 100%;">
+                                    <option value="">Select a Skill</option>
+                                    <option th:each="skill : ${softSkillList}"
+                                            th:field="*{softSkills}"
+                                            th:value="${skill}"
+                                            th:text="${skill}">Skill</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <span class="error text-danger" th:if="${#fields.hasErrors('softSkills')}"
+                                      th:errors="*{softSkills}">Soft skills error</span>
+                            </div>
+                            <div class="form-group">
+                                <label>Gender</label>
+                                <div class="form-check">
+                                    <input id="gender_male" class="form-check-input" type="radio" name="gender"
+                                           th:checked="${account.getGender().name() == 'MALE'}" th:value="MALE">
+                                    <label for="gender_male" class="form-check-label">Male</label>
+                                </div>
+                                <div class="form-check">
+                                    <input id="gender_female" class="form-check-input" type="radio" name="gender"
+                                           th:checked="${account.getGender().name() == 'FEMALE'}" th:value="FEMALE">
+                                    <label for="gender_female" class="form-check-label">Female</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Hire Date</label>
+                                <div class="input-group date" id="hireDate-datepicker" data-target-input="nearest">
+                                    <input type="text" id="hireDate" th:field="*{hireDate}"
+                                           th:classappend="${#fields.hasErrors('hireDate')} ? 'is-invalid' : ''"
+                                           class="form-control" />
+                                    <div class="input-group-append" data-target="#hireDate-datepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                                <span class="error text-danger" th:if="${#fields.hasErrors('hireDate')}"
+                                      th:errors="*{hireDate}">Hire date error</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="bio">Bio</label>
+                                <textarea id="bio" th:field="*{bio}" th:classappend="${#fields.hasErrors('phone')} ? 'is-invalid' : ''"
+                                          class="form-control" rows="4" maxlength="1000"
+                                          placeholder="About ..."></textarea>
+                                <span th:if="${#fields.hasErrors('bio')}" th:errors="*{bio}">Bio error</span>
+                            </div>
+                        </div>
+                        <div class="box-footer">
+                            <button class="btn btn-primary" type="submit">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Select2 -->
+    <script th:src="@{/plugins/select2/js/select2.full.min.js}"></script>
+    <!-- InputMask -->
+    <script th:src="@{/plugins/moment/moment.min.js}"></script>
+    <script th:src="@{/plugins/inputmask/min/jquery.inputmask.bundle.min.js}"></script>
+    <!-- date-range-picker -->
+    <script th:src="@{/plugins/daterangepicker/daterangepicker.js}"></script>
+    <script th:inline="javascript">
+        $(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            $('[data-mask]').inputmask();
+
+            // $('#hireDate').inputmask('dd/mm/yyyy', { 'placeholder': 'DD/MM/YYYY' });
+
+            //Date time picker
+            $('#hireDate-datepicker').daterangepicker({
+                timePicker: false,
+                singleDatePicker: true,
+                showDropdowns: true,
+                minYear: 2015,
+                maxDate: new Date(),
+                locale: {
+                    format: 'DD/MM/YYYY'
+                }
+            });
+            $('#hireDate-datepicker').on('apply.daterangepicker', function(ev,picker) {
+                //console.log("start: " + picker.startDate.format('DD/MM/YYYY'));
+                $('#hireDate').val(picker.startDate.format('DD/MM/YYYY'));
+            });
+        });
+    </script>
+</div>
+</body>
+</html>

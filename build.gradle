@@ -1,0 +1,73 @@
+buildscript {
+    ext {
+        springBootVersion = '2.3.0.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath('se.transmode.gradle:gradle-docker:1.2')
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'docker'
+
+group = 'com.polixis.admin.toolkit'
+version = '0.0.1-SNAPSHOT'
+
+compileJava {
+    sourceCompatibility = 11
+    targetCompatibility = 11
+}
+
+jar {
+    baseName = "bank_transaction_toolkit"
+    group    = "am.neovision.admin.toolkit"
+    manifest { attributes "Main-Class": "am.neovision.admin.toolkit.AdminToolkit" }
+}
+
+repositories {
+    mavenCentral()
+}
+
+task buildDocker(type: Docker, dependsOn: build) {
+    push = false
+    applicationName = jar.baseName
+    dockerfile = file('src/main/docker/Dockerfile')
+    doFirst {
+        copy {
+            from jar
+            into stageDir
+        }
+    }
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-web')
+    runtime('mysql:mysql-connector-java')
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-security')
+    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+    compile('org.springframework:spring-context-support')
+    compile('com.google.guava:guava:19.0')
+    compile('nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect')
+    compile('org.apache.commons:commons-lang3')
+    compile('org.ocpsoft.prettytime:prettytime:4.0.5.Final')
+    compile('org.hibernate:hibernate-validator:6.0.10.Final')
+    compile('com.fasterxml.jackson.core:jackson-databind:2.11.0')
+
+    compileOnly "org.projectlombok:lombok"
+    annotationProcessor "org.projectlombok:lombok"
+
+    compile('com.github.ulisesbocchio:jasypt-spring-boot-starter:2.1.2')
+//    compile('org.webjars:bootstrap:4.0.0')
+
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile('org.springframework.security:spring-security-test')
+    testCompile("junit:junit")
+}
