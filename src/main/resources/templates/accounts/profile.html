@@ -9,7 +9,6 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3">
-
                 <!-- Profile Image -->
                 <div class="card card-primary card-outline">
                     <div class="card-body box-profile">
@@ -20,6 +19,11 @@
                         </div>
 
                         <h3 class="profile-username text-center" th:text="${profile.fullName}">Full Name</h3>
+
+                        <div class="text-center">
+                            <strong><i class="fas fa-envelope mr-1"></i> Email</strong>
+                            <p class="text-muted" th:text="${profile.email}">Email</p>
+                        </div>
 
                         <a th:if="${!section.isAdmin()}" th:href="@{/logout}"
                            class="btn btn-primary btn-block"><b>Logout</b></a>
@@ -33,21 +37,435 @@
                 <!-- About Me Box -->
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">Profile details</h3>
+                        <h3 class="card-title">Bank Accounts</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6">
-                                <strong><i class="fas fa-money-bill mr-1"></i> Currency</strong>
-                                <p class="text-muted" th:text="${profile.currency}"> Currency</p>
-                                <hr>
-                                <strong><i class="fas fa-envelope mr-1"></i> Email</strong>
-                                <p class="text-muted" th:text="${profile.email}">Email</p>
+                            <div class="col-md-12">
+                                <div class="row d-flex align-items-stretch">
+                                    <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
+                                        <div class="card bg-light">
+                                            <div class="card-header text-muted border-bottom-0">
+                                                Digital Strategist
+                                            </div>
+                                            <div class="card-body pt-0">
+                                                <div class="row">
+                                                    <!-- Transparent Image -->
+                                                    <img src="images/transparent.png" alt="" class="img-responsive" />
+                                                    <!-- Heading -->
+                                                    <div class="item-heading clearfix">
+                                                        <!-- Heading -->
+                                                        <h3>Debit Card</h3>
+                                                        <!-- Bank Name -->
+                                                        <h4>AR Bank</h4>
+                                                    </div>
+                                                    <!-- Account -->
+                                                    <div class="item-account">
+                                                        <!-- Value -->
+                                                        <span>1234</span>
+                                                        <span>5678</span>
+                                                        <span>0011</span>
+                                                        <span>1626</span>
+                                                    </div>
+                                                    <!-- Validity Starts -->
+                                                    <div class="item-validity">
+                                                        <div class="row">
+                                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                                <!-- Item -->
+                                                                <div class="item-valid clearfix">
+                                                                    <!-- Valid From -->
+                                                                    <h5>Valid From</h5>
+                                                                    <!-- Date -->
+                                                                    <span>12/05</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                                <!-- Item -->
+                                                                <div class="item-valid clearfix">
+                                                                    <!-- Valid Thru -->
+                                                                    <h5>Valid Thru</h5>
+                                                                    <!-- Date -->
+                                                                    <span>12/15</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Validity Ends -->
+
+                                                    <!-- Card Type Starts -->
+                                                    <div class="item-cc-type clearfix">
+                                                        <!-- Type -->
+                                                        <h6>VISA CARD</h6>
+                                                        <!-- Icon -->
+                                                        <i class="fa fa-cc-visa"></i>
+                                                    </div>
+                                                    <!-- Card Type Ends -->
+                                                </div>
+                                            </div>
+                                            <div class="card-footer">
+                                                <div class="text-right">
+                                                    <a href="#" class="btn btn-sm btn-primary">
+                                                        <i class="fas fa-hand-holding-usd"></i> Make transaction
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
+                                        <div class="card bg-light">
+                                            <div class="card-header text-muted border-bottom-0">
+                                                Digital Strategist
+                                            </div>
+                                            <div class="card-body pt-0">
+                                                <div class="row">
+                                                    <!-- Transparent Image -->
+                                                    <img src="images/transparent.png" alt="" class="img-responsive" />
+                                                    <!-- Heading -->
+                                                    <div class="item-heading clearfix">
+                                                        <!-- Heading -->
+                                                        <h3>Debit Card</h3>
+                                                        <!-- Bank Name -->
+                                                        <h4>AR Bank</h4>
+                                                    </div>
+                                                    <!-- Account -->
+                                                    <div class="item-account">
+                                                        <!-- Value -->
+                                                        <span>1234</span>
+                                                        <span>5678</span>
+                                                        <span>0011</span>
+                                                        <span>1626</span>
+                                                    </div>
+                                                    <!-- Validity Starts -->
+                                                    <div class="item-validity">
+                                                        <div class="row">
+                                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                                <!-- Item -->
+                                                                <div class="item-valid clearfix">
+                                                                    <!-- Valid From -->
+                                                                    <h5>Valid From</h5>
+                                                                    <!-- Date -->
+                                                                    <span>12/05</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                                <!-- Item -->
+                                                                <div class="item-valid clearfix">
+                                                                    <!-- Valid Thru -->
+                                                                    <h5>Valid Thru</h5>
+                                                                    <!-- Date -->
+                                                                    <span>12/15</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Validity Ends -->
+
+                                                    <!-- Card Type Starts -->
+                                                    <div class="item-cc-type clearfix">
+                                                        <!-- Type -->
+                                                        <h6>VISA CARD</h6>
+                                                        <!-- Icon -->
+                                                        <i class="fa fa-cc-visa"></i>
+                                                    </div>
+                                                    <!-- Card Type Ends -->
+                                                </div>
+                                            </div>
+                                            <div class="card-footer">
+                                                <div class="text-right">
+                                                    <a href="#" class="btn btn-sm btn-primary">
+                                                        <i class="fas fa-hand-holding-usd"></i> Make transaction
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
+                                        <div class="card bg-light">
+                                            <div class="card-header text-muted border-bottom-0">
+                                                Digital Strategist
+                                            </div>
+                                            <div class="card-body pt-0">
+                                                <div class="row">
+                                                    <!-- Transparent Image -->
+                                                    <img src="images/transparent.png" alt="" class="img-responsive" />
+                                                    <!-- Heading -->
+                                                    <div class="item-heading clearfix">
+                                                        <!-- Heading -->
+                                                        <h3>Debit Card</h3>
+                                                        <!-- Bank Name -->
+                                                        <h4>AR Bank</h4>
+                                                    </div>
+                                                    <!-- Account -->
+                                                    <div class="item-account">
+                                                        <!-- Value -->
+                                                        <span>1234</span>
+                                                        <span>5678</span>
+                                                        <span>0011</span>
+                                                        <span>1626</span>
+                                                    </div>
+                                                    <!-- Validity Starts -->
+                                                    <div class="item-validity">
+                                                        <div class="row">
+                                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                                <!-- Item -->
+                                                                <div class="item-valid clearfix">
+                                                                    <!-- Valid From -->
+                                                                    <h5>Valid From</h5>
+                                                                    <!-- Date -->
+                                                                    <span>12/05</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                                <!-- Item -->
+                                                                <div class="item-valid clearfix">
+                                                                    <!-- Valid Thru -->
+                                                                    <h5>Valid Thru</h5>
+                                                                    <!-- Date -->
+                                                                    <span>12/15</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Validity Ends -->
+
+                                                    <!-- Card Type Starts -->
+                                                    <div class="item-cc-type clearfix">
+                                                        <!-- Type -->
+                                                        <h6>VISA CARD</h6>
+                                                        <!-- Icon -->
+                                                        <i class="fa fa-cc-visa"></i>
+                                                    </div>
+                                                    <!-- Card Type Ends -->
+                                                </div>
+                                            </div>
+                                            <div class="card-footer">
+                                                <div class="text-right">
+                                                    <a href="#" class="btn btn-sm btn-primary">
+                                                        <i class="fas fa-hand-holding-usd"></i> Make transaction
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
+                                        <div class="card bg-light">
+                                            <div class="card-header text-muted border-bottom-0">
+                                                Digital Strategist
+                                            </div>
+                                            <div class="card-body pt-0">
+                                                <div class="row">
+                                                    <!-- Transparent Image -->
+                                                    <img src="images/transparent.png" alt="" class="img-responsive" />
+                                                    <!-- Heading -->
+                                                    <div class="item-heading clearfix">
+                                                        <!-- Heading -->
+                                                        <h3>Debit Card</h3>
+                                                        <!-- Bank Name -->
+                                                        <h4>AR Bank</h4>
+                                                    </div>
+                                                    <!-- Account -->
+                                                    <div class="item-account">
+                                                        <!-- Value -->
+                                                        <span>1234</span>
+                                                        <span>5678</span>
+                                                        <span>0011</span>
+                                                        <span>1626</span>
+                                                    </div>
+                                                    <!-- Validity Starts -->
+                                                    <div class="item-validity">
+                                                        <div class="row">
+                                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                                <!-- Item -->
+                                                                <div class="item-valid clearfix">
+                                                                    <!-- Valid From -->
+                                                                    <h5>Valid From</h5>
+                                                                    <!-- Date -->
+                                                                    <span>12/05</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                                <!-- Item -->
+                                                                <div class="item-valid clearfix">
+                                                                    <!-- Valid Thru -->
+                                                                    <h5>Valid Thru</h5>
+                                                                    <!-- Date -->
+                                                                    <span>12/15</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Validity Ends -->
+
+                                                    <!-- Card Type Starts -->
+                                                    <div class="item-cc-type clearfix">
+                                                        <!-- Type -->
+                                                        <h6>VISA CARD</h6>
+                                                        <!-- Icon -->
+                                                        <i class="fa fa-cc-visa"></i>
+                                                    </div>
+                                                    <!-- Card Type Ends -->
+                                                </div>
+                                            </div>
+                                            <div class="card-footer">
+                                                <div class="text-right">
+                                                    <a href="#" class="btn btn-sm btn-primary">
+                                                        <i class="fas fa-hand-holding-usd"></i> Make transaction
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
+                                        <div class="card bg-light">
+                                            <div class="card-header text-muted border-bottom-0">
+                                                Digital Strategist
+                                            </div>
+                                            <div class="card-body pt-0">
+                                                <div class="row">
+                                                    <!-- Transparent Image -->
+                                                    <img src="images/transparent.png" alt="" class="img-responsive" />
+                                                    <!-- Heading -->
+                                                    <div class="item-heading clearfix">
+                                                        <!-- Heading -->
+                                                        <h3>Debit Card</h3>
+                                                        <!-- Bank Name -->
+                                                        <h4>AR Bank</h4>
+                                                    </div>
+                                                    <!-- Account -->
+                                                    <div class="item-account">
+                                                        <!-- Value -->
+                                                        <span>1234</span>
+                                                        <span>5678</span>
+                                                        <span>0011</span>
+                                                        <span>1626</span>
+                                                    </div>
+                                                    <!-- Validity Starts -->
+                                                    <div class="item-validity">
+                                                        <div class="row">
+                                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                                <!-- Item -->
+                                                                <div class="item-valid clearfix">
+                                                                    <!-- Valid From -->
+                                                                    <h5>Valid From</h5>
+                                                                    <!-- Date -->
+                                                                    <span>12/05</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                                <!-- Item -->
+                                                                <div class="item-valid clearfix">
+                                                                    <!-- Valid Thru -->
+                                                                    <h5>Valid Thru</h5>
+                                                                    <!-- Date -->
+                                                                    <span>12/15</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Validity Ends -->
+
+                                                    <!-- Card Type Starts -->
+                                                    <div class="item-cc-type clearfix">
+                                                        <!-- Type -->
+                                                        <h6>VISA CARD</h6>
+                                                        <!-- Icon -->
+                                                        <i class="fa fa-cc-visa"></i>
+                                                    </div>
+                                                    <!-- Card Type Ends -->
+                                                </div>
+                                            </div>
+                                            <div class="card-footer">
+                                                <div class="text-right">
+                                                    <a href="#" class="btn btn-sm btn-primary">
+                                                        <i class="fas fa-hand-holding-usd"></i> Make transaction
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
+                                        <div class="card bg-light">
+                                            <div class="card-header text-muted border-bottom-0">
+                                                Digital Strategist
+                                            </div>
+                                            <div class="card-body pt-0">
+                                                <div class="row">
+                                                    <!-- Transparent Image -->
+                                                    <img src="images/transparent.png" alt="" class="img-responsive" />
+                                                    <!-- Heading -->
+                                                    <div class="item-heading clearfix">
+                                                        <!-- Heading -->
+                                                        <h3>Debit Card</h3>
+                                                        <!-- Bank Name -->
+                                                        <h4>AR Bank</h4>
+                                                    </div>
+                                                    <!-- Account -->
+                                                    <div class="item-account">
+                                                        <!-- Value -->
+                                                        <span>1234</span>
+                                                        <span>5678</span>
+                                                        <span>0011</span>
+                                                        <span>1626</span>
+                                                    </div>
+                                                    <!-- Validity Starts -->
+                                                    <div class="item-validity">
+                                                        <div class="row">
+                                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                                <!-- Item -->
+                                                                <div class="item-valid clearfix">
+                                                                    <!-- Valid From -->
+                                                                    <h5>Valid From</h5>
+                                                                    <!-- Date -->
+                                                                    <span>12/05</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                                                <!-- Item -->
+                                                                <div class="item-valid clearfix">
+                                                                    <!-- Valid Thru -->
+                                                                    <h5>Valid Thru</h5>
+                                                                    <!-- Date -->
+                                                                    <span>12/15</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Validity Ends -->
+
+                                                    <!-- Card Type Starts -->
+                                                    <div class="item-cc-type clearfix">
+                                                        <!-- Type -->
+                                                        <h6>VISA CARD</h6>
+                                                        <!-- Icon -->
+                                                        <i class="fa fa-cc-visa"></i>
+                                                    </div>
+                                                    <!-- Card Type Ends -->
+                                                </div>
+                                            </div>
+                                            <div class="card-footer">
+                                                <div class="text-right">
+                                                    <a href="#" class="btn btn-sm btn-primary">
+                                                        <i class="fas fa-hand-holding-usd"></i> Make transaction
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <!-- /.card-body -->
+                    <div class="card-footer">
+                        <nav aria-label="Contacts Page Navigation">
+                            <ul class="pagination justify-content-center m-0">
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
                 <!-- /.card -->
             </div>

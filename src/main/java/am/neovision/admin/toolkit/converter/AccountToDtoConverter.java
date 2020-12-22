@@ -11,21 +11,21 @@ import org.springframework.stereotype.Component;
 @Component
 public class AccountToDtoConverter implements Converter<Account, AccountDto> {
     @Override
-    public AccountDto convert(Account account) {
-        if (account == null) {
+    public AccountDto convert(Account entity) {
+        if (entity == null) {
             return null;
         }
-        AccountDto accountDto = new AccountDto();
-        BeanUtils.copyProperties(account, accountDto);
-        if (StringUtils.isNoneBlank(account.getAvatar())) {
-            accountDto.setAvatar(account.getAvatar());
+        AccountDto dto = new AccountDto();
+        BeanUtils.copyProperties(entity, dto);
+        if (StringUtils.isNoneBlank(entity.getAvatar())) {
+            dto.setAvatar(entity.getAvatar());
         } else {
-            if (account.getGender() != null && account.getGender().equals(Gender.FEMALE)) {
-                accountDto.setAvatar("/dist/img/avatar-female.jpg");
+            if (entity.getGender() != null && entity.getGender().equals(Gender.FEMALE)) {
+                dto.setAvatar("/dist/img/avatar-female.jpg");
             } else {
-                accountDto.setAvatar("/dist/img/avatar-male.jpg");
+                dto.setAvatar("/dist/img/avatar-male.jpg");
             }
         }
-        return accountDto;
+        return dto;
     }
 }

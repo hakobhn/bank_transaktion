@@ -6,7 +6,6 @@
 package am.neovision.admin.toolkit.domain.model;
 
 import am.neovision.admin.toolkit.domain.AbstractModel;
-import am.neovision.admin.toolkit.dto.Currency;
 import am.neovision.admin.toolkit.dto.Gender;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

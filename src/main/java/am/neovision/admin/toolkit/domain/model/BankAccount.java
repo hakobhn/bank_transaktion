@@ -7,14 +7,12 @@ package am.neovision.admin.toolkit.domain.model;
 
 import am.neovision.admin.toolkit.domain.AbstractModel;
 import am.neovision.admin.toolkit.dto.Currency;
-import am.neovision.admin.toolkit.dto.Gender;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.Set;
 
 /**

@@ -26,8 +26,8 @@ import java.util.Optional;
 
 @Slf4j
 @Controller
-@RequestMapping("accounts")
-public class AccountController extends AbstractController {
+@RequestMapping("bank_accounts")
+public class BankAccountController extends AbstractController {
 
     @Autowired
     private RequestToDatatableRequestConverter requestToDtReqConverter;
@@ -144,7 +144,7 @@ public class AccountController extends AbstractController {
 
         Optional.ofNullable(accountService.getCurrentAccount()).ifPresent(
         acc -> {
-            if (!acc.getUuid().equals(uuid)) {
+            if (acc.getUuid().equals(uuid)) {
                 throw new PermissionDenied("Not allowed to get data.");
             }
         });

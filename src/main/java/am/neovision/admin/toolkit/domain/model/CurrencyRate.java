@@ -7,12 +7,10 @@ package am.neovision.admin.toolkit.domain.model;
 
 import am.neovision.admin.toolkit.domain.AbstractModel;
 import am.neovision.admin.toolkit.dto.Currency;
-import am.neovision.admin.toolkit.dto.TransactionType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
