@@ -13,6 +13,7 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Set;
 
@@ -22,34 +23,31 @@ import java.util.Set;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "ACCOUNT")
-public class Account extends AbstractModel<Long> {
+@Table(name = "BANK_ACCOUNT")
+public class BankAccount extends AbstractModel<Long> {
 
     @NotBlank
     @Column(unique = true)
     private String uuid;
 
     @NotBlank
-    @Column(unique = true)
-    @Size(min = 3, max = 200)
-    private String email;
+    @Column(unique = true, length=16)
+    private String number;
 
-    @NotBlank
-    private String password;
+    private Double amount;
 
-    @NotBlank
-    @Size(min = 3, max = 32)
-    private String firstName;
-    @NotBlank
-    @Size(min = 3, max = 32)
-    private String lastName;
-
-    private String avatar;
-
-    @Column(columnDefinition = "enum('MALE','FEMALE')")
+    @NotNull
+    @Column(columnDefinition = "enum('EURO','USD', 'GPB')")
     @Enumerated(EnumType.STRING)
-    private Gender gender;
+    private Currency currency;
 
-    @OneToMany(mappedBy="owner", fetch = FetchType.LAZY)
-    private Set<BankAccount> bankAccounts;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="ACCOUNT_ID", nullable=false)
+    private Account owner;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "fromAccount", cascade = {CascadeType.ALL})
+    private Set<Transaction> output;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "toAccount", cascade = {CascadeType.ALL})
+    private Set<Transaction> input;
 }
