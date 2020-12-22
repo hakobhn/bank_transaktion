@@ -32,12 +32,8 @@ public class Transaction extends AbstractModel<Long> {
     @Column(unique = true, length=16)
     private String number;
 
-    private Double amount;
-
-    @NotNull
-    @Column(columnDefinition = "enum('EURO','USD', 'GPB')")
-    @Enumerated(EnumType.STRING)
-    private Currency currency;
+    @Column(columnDefinition = "DECIMAL(10,2)")
+    private Float amount;
 
     @NotNull
     @Column(columnDefinition = "enum('DEPOSIT', 'WITHDRAWAL', 'TRANSFER')")

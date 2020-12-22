@@ -25,6 +25,7 @@ import javax.validation.constraints.NotNull;
 public class CurrencyRate extends AbstractModel<Long> {
 
     @NotNull
+    @Column(columnDefinition = "DECIMAL(10,2)")
     private Double rate;
 
     @NotNull
