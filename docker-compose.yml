@@ -1,0 +1,33 @@
+version: '3.7'
+
+services:
+  spring-boot-app:
+    image: bank-transactions
+    build:
+      context: .
+      dockerfile: ./src/main/docker/Dockerfile
+    restart:
+      unless-stopped
+    depends_on:
+      - mysql
+    ports:
+      - "8091:8090"
+    volumes:
+      - /data/app
+  mysql:
+    image: mysql/mysql-server:5.7
+    environment:
+      MYSQL_DATABASE: bank_transaction
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    restart: always
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./docker-compose/mysql:/docker-entrypoint-initdb.d
+
+# Volumes
+volumes:
+  db-data:

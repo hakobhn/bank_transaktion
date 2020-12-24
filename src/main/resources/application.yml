@@ -6,6 +6,9 @@ spring:
       dialect: MySQL5Dialect
     datasource:
       driverClassName: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://mysql:3306/bank_transaction?useSSL=false
+      username: root
+      password: root
   thymeleaf:
     cache: false
     check-template: true
