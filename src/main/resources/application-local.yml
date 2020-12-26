@@ -6,9 +6,10 @@ spring:
 
 #Admin app admin user credentials
 root:
-  email: root.mongoadmin@polixis.com
-  password: ENC(Mj3KG0Sy88eEmxcgxUUflByvsFSz8Hn+)
+  email: admin.bank_transaction@neovision.am
+  #root_123456
+  password: ENC(8AktOy1Shya0wo4CPET0+hjQ5s6FLycx)
 
 jasypt:
   encryptor:
-    password: secret
+    password: neovision_secret
