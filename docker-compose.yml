@@ -8,12 +8,16 @@ services:
       dockerfile: ./src/main/docker/Dockerfile
     restart:
       unless-stopped
+    environment:
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+    env_file:
+      - .env
     depends_on:
       - mysql
     ports:
       - "8091:8090"
-    env_file:
-      - .env
   mysql:
     image: mysql/mysql-server:5.7
     environment:
@@ -21,14 +25,14 @@ services:
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    env_file:
+      - .env
     ports:
       - "3306:3306"
     restart: always
     volumes:
       - db-data:/var/lib/mysql
       - ./docker-compose/mysql:/docker-entrypoint-initdb.d
-    env_file:
-      - .env
 
 # Volumes
 volumes:

@@ -3,12 +3,9 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: validate
-      dialect: MySQL5Dialect
-    datasource:
-      driverClassName: ${DB_DRIVER}
-      url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_DATABASE}?useSSL=false
-      username: ${DB_USER}
-      password: ${DB_PASSWORD}
+      dialect: org.hibernate.dialect.MySQL8Dialect
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
   thymeleaf:
     cache: false
     check-template: true
