@@ -73,15 +73,25 @@ function initAccounts() {
                 "searchable": false,
                 "render": function (data, type, row) {
                     let result = '';
-                        result = '<div class="form-group">\n' +
-                            '   <div>\n' +
-                            '       <a class="btn btn-primary btn-sm" href="/accounts/edit/'+ row["uuid"]+'">' +
-                            '           <i class="fas fa-edit"></i> Edit\n' +
-                            '       </a>\n' +
-                            '       <a class="btn btn-danger btn-sm" href="#" onclick="deleteAccount(\'' + data + '\')">' +
-                            '           <i class="fas fa-trash"></i> Delete\n' +
-                            '       </a>\n';
-                            '   </div>';
+                        result = '<div class="container">\n' +
+                            '       <div class="row">' +
+                            '             <div class="col-12 col-md-3">' +
+                            '                 <a alt="Manage bank accounts" href="/accounts/bank_accounts/'+ row["uuid"]+'" class="btn btn-sm bg-teal">' +
+                            '                     <i class="fas fa-money-check"></i>' +
+                            '                 </a>' +
+                            '             </div>'+
+                            '             <div class="col-12 col-md-3">' +
+                            '                 <a alt="Edit" class="btn btn-primary btn-sm" href="/accounts/edit/'+ row["uuid"]+'">' +
+                            '                     <i class="fas fa-edit"></i>' +
+                            '                 </a>\n' +
+                            '             </div>'+
+                            '             <div class="col-12 col-md-3">' +
+                            '                 <a alt="Delete" class="btn btn-danger btn-sm" href="#" onclick="deleteAccount(\'' + data + '\')">' +
+                            '                     <i class="fas fa-trash"></i>' +
+                            '                 </a>\n';
+                            '             </div>'+
+                            '        </div>' +
+                            '    </div>';
                     return result;
                 }
             },

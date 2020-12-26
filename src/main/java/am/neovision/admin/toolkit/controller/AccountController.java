@@ -170,4 +170,38 @@ public class AccountController extends AbstractController {
 
         return "accounts/profile";
     }
+
+    @RequestMapping(value = "/accounts/{uuid}", method = RequestMethod.GET)
+    public String bankAccounts(@PathVariable String uuid, Model model) {
+        section.setTitle("Profile");
+        section.setDescription("User Profile");
+
+        Optional.ofNullable(accountService.getCurrentAccount()).ifPresent(
+                acc -> {
+                    if (!acc.getUuid().equals(uuid)) {
+                        throw new PermissionDenied("Not allowed to get data.");
+                    }
+                });
+
+        AccountDto accountDto = accountService.findByUUID(uuid);
+
+        Profile profile = new Profile();
+        profile.setFullName(accountDto.getFirstName() + " " + accountDto.getLastName());
+        profile.setEmail(accountDto.getEmail());
+        profile.setCurrency(accountDto.getCurrency());
+
+        if (StringUtils.isNoneBlank(accountDto.getAvatar())) {
+            profile.setAvatar(accountDto.getAvatar());
+        } else {
+            if (accountDto.getGender() != null && accountDto.getGender().equals(Gender.FEMALE)) {
+                profile.setAvatar("/dist/img/avatar-female.jpg");
+            } else {
+                profile.setAvatar("/dist/img/avatar-male.jpg");
+            }
+        }
+
+        model.addAttribute("profile", profile);
+
+        return "accounts/profile";
+    }
 }
