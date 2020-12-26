@@ -3,7 +3,7 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: validate
-      dialect: org.hibernate.dialect.MySQL8Dialect
+      dialect: MySQL5Dialect
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
   thymeleaf:
