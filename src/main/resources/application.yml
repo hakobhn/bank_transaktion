@@ -2,11 +2,18 @@ spring:
   jpa:
     generate-ddl: true
     show-sql: true
+    ## Hibernate Properties
     hibernate:
-      ddl-auto: update
-      dialect: MySQL5Dialect
+      # Hibernate ddl auto (create, create-drop, validate, update)
+      ddl-auto: create
+      # The SQL dialect makes Hibernate generate better SQL for the chosen database
+      dialect: org.hibernate.dialect.MySQL5Dialect
+  ## Spring DATA SOURCE Configurations
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
+    # HikaryCP Properties
+    hikari:
+      initialization-fail-timeout: -1
   thymeleaf:
     cache: false
     check-template: true
