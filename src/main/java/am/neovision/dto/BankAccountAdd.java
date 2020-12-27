@@ -8,6 +8,8 @@ import javax.validation.constraints.Pattern;
 
 @Data
 public class BankAccountAdd extends AbstractDto {
+    @NotBlank
+    private String ownerUuid;
     @NotBlank(message = "Bank number is required")
     @Pattern(regexp = "^\\d{4}\\-\\d{4}\\-\\d{4}\\-\\d{4}$", message = "Bank number is invalid")
     private String number;

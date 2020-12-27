@@ -1,5 +1,5 @@
 
-const CONSTANTS = {
+const APP_CONSTANTS = {
     unknown: "unknown"
 }
 
@@ -25,7 +25,7 @@ function showMessage(bgClass, title, subtitle, message) {
     return false;
 }
 
-const MONTH_NAMES = [
+const APP_MONTH_NAMES = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
 ];
@@ -33,7 +33,7 @@ const MONTH_NAMES = [
 
 function getFormattedDate(date, prefomattedDate = false, hideYear = false) {
     const day = date.getDate();
-    const month = MONTH_NAMES[date.getMonth()];
+    const month = APP_MONTH_NAMES[date.getMonth()];
     const year = date.getFullYear();
     const hours = date.getHours();
     let minutes = date.getMinutes();

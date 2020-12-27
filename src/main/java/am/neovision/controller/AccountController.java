@@ -1,6 +1,7 @@
 package am.neovision.controller;
 
 import am.neovision.converter.RequestToDatatableRequestConverter;
+import am.neovision.domain.model.BankAccount;
 import am.neovision.exceptions.PermissionDenied;
 import am.neovision.payload.ApiResponse;
 import am.neovision.service.impl.AccountService;
@@ -141,6 +142,11 @@ public class AccountController extends AbstractController {
     public String profile(@PathVariable String uuid, Model model) {
         section.setTitle("Profile");
         section.setDescription("User Profile");
+
+        if(accountService.isAdmin()) {
+            model.addAttribute("bankAccount", new BankAccountAdd());
+            model.addAttribute("currencies", Currency.values());
+        }
 
         Optional.ofNullable(accountService.getCurrentAccount()).ifPresent(
         acc -> {

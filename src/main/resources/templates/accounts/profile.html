@@ -6,6 +6,10 @@
 </head>
 <body>
 <div layout:fragment="content">
+
+    <!-- Select2 -->
+    <link rel="stylesheet" th:href="@{/plugins/select2/css/select2.min.css}">
+
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3">
@@ -38,6 +42,8 @@
                 <div class="card card-primary">
                     <div class="card-header">
                         <h3 class="card-title">Bank Accounts</h3>
+                        <button th:if="${bankAccount != null}" id="add_bank_account" type="button" class="btn btn-tool mt-0 p-0 float-right">
+                            <i class="fas fa-plus"></i> Add item</button>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -473,6 +479,91 @@
         </div>
         <!-- /.row -->
     </div><!-- /.container-fluid -->
+
+    <div th:if="${bankAccount != null}" class="modal fade" id="bank_account-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add bank account</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="bank_account-form" data-toggle="validator" role="form" th:object="${bankAccount}" th:action="@{/bank_accounts/add}"
+                          autocomplete="off" method="post">
+                        <input class="form-control" type="hidden" th:field="*{ownerUuid}"/>
+
+                        <div class="form-group">
+                            <label for="number">Number</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-credit-card"></i></span>
+                                </div>
+                                <input type="text" th:classappend="${#fields.hasErrors('number')} ? 'is-invalid' : ''"
+                                       class="form-control"
+                                       th:field="*{number}" id="number"
+                                       data-inputmask='"mask": "9999-9999-9999-9999"' data-mask>
+                                <span class="error text-danger" th:if="${#fields.hasErrors('number')}"
+                                      th:errors="*{number}">Number error</span>
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                        <div class="form-group">
+                            <label for="amount">Amount</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-coins"></i></span>
+                                </div>
+                                <input type="text" th:classappend="${#fields.hasErrors('amount')} ? 'is-invalid' : ''"
+                                       class="form-control"
+                                       th:field="*{amount}" id="amount"
+                                       data-inputmask="'alias': 'currency', 'rightAlign': false, 'prefix': '$ '" data-mask>
+                                <span class="error text-danger" th:if="${#fields.hasErrors('amount')}"
+                                      th:errors="*{amount}">Amount error</span>
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                        <div class="form-group">
+                            <label for="currency">Currency</label>
+                            <select th:field="*{currency}" id="currency" data-placeholder="Select a currency"
+                                    th:classappend="${#fields.hasErrors('currency')} ? 'is-invalid' : ''"
+                                    class="form-control select2" style="width: 100%;">
+                                <option th:each="curr : ${currencies}"
+                                        th:field="*{currency}"
+                                        th:value="${curr.getDisplayValue()}"
+                                        th:text="${curr.getDisplayValue()}">Currency</option>
+                            </select>
+                            <span class="error text-danger" th:if="${#fields.hasErrors('currency')}"
+                                  th:errors="*{currency}">Currency error</span>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-right">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="add_bank_account-button" type="button" class="btn btn-primary" onclick="addBankAccount()">Add</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <!-- Select2 -->
+    <script th:src="@{/plugins/select2/js/select2.full.min.js}"></script>
+    <script th:src="@{/plugins/inputmask/min/jquery.inputmask.bundle.min.js}"></script>
+    <script th:src="@{/dist/js/profile.js}"></script>
+
+    <script th:inline="javascript">
+        $(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2();
+
+            $('[data-mask]').inputmask();
+        });
+    </script>
+
 </div>
 </body>
 </html>
