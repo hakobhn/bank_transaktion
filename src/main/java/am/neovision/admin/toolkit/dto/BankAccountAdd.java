@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Data
-@EqualsAndHashCode
 public class BankAccountAdd extends AbstractDto {
     @NotBlank(message = "Bank number is required")
     @Pattern(regexp = "^\\d{4}\\-\\d{4}\\-\\d{4}\\-\\d{4}$", message = "Bank number is invalid")

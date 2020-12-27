@@ -10,7 +10,10 @@ spring:
       dialect: org.hibernate.dialect.MySQL5InnoDBDialect
   ## Spring DATA SOURCE Configurations
   datasource:
-    driverClassName: com.mysql.cj.jdbc.Driver
+#    platform: mysql
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
   thymeleaf:
     cache: false
     check-template: true

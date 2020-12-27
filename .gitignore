@@ -25,6 +25,4 @@
 /dist/
 /nbdist/
 /.nb-gradle/
-/mongo-backups/
-/mongo-data/
 /logs/

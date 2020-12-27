@@ -1,35 +1,41 @@
-# Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
+version: "3"
 
-version: '2.1'
-
-# Define services
 services:
-
-  # Database Service (Mysql)
-  db:
-    container_name: bank-db
-    image: 'mysql/mysql-server:5.7'
-    volumes:
-      - ./dbdata:/var/lib/mysql
-    environment:
-      MYSQL_DATABASE: bank_transaction
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_ROOT_HOST: '%'
-    ports:
-      - '3301:3306'
-    restart: always
-
-  # App backend service
-  app-server:
-    # Configuration for building the docker image for the spring boot mvc
-    image: bank-spring-boot-app
+  service:
     build:
       context: .
-      dockerfile: ./src/main/docker/Dockerfile
+      dockerfile: ./Dockerfile
+    container_name: bank-service-app
+    restart: on-failure
     ports:
-      - 8091:8090
-    volumes:
-      - /data/bank-spring-boot-app
+      - "8091:8090"
+    networks:
+      - banknet
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb/bank?useUnicode=true&characterEncoding=utf8&useSSL=false
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+#      - SPRING_DATASOURCE_PLATFORM=mysql
     depends_on:
-      db:
-        condition: service_healthy
+      - mysqldb
+
+  mysqldb:
+    image: mysql
+    container_name: bank-service-mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    networks:
+      - banknet
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=bank
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=root --execute \"SHOW DATABASES;\""
+      interval: 5s
+      timeout: 20s
+      retries: 10
+
+networks:
+  banknet:
+    driver: bridge
