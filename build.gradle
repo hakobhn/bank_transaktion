@@ -15,7 +15,6 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath('se.transmode.gradle:gradle-docker:1.2')
     }
 }
 
@@ -29,9 +28,6 @@ apply plugin: "io.spring.dependency-management"
 
 //ide
 apply plugin: "idea"
-
-//docker
-apply plugin: 'docker'
 
 group = 'am.neovision.admin.toolkit'
 version = '0.1.0-SNAPSHOT'
@@ -51,18 +47,6 @@ bootJar {
 
 repositories {
     mavenCentral()
-}
-
-task buildDocker(type: Docker, dependsOn: build) {
-    push = false
-    applicationName = jar.baseName
-    dockerfile = file('src/main/docker/Dockerfile')
-    doFirst {
-        copy {
-            from jar
-            into stageDir
-        }
-    }
 }
 
 dependencies {
@@ -85,7 +69,6 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok"
 
     compile('com.github.ulisesbocchio:jasypt-spring-boot-starter:2.1.2')
-//    compile('org.webjars:bootstrap:4.0.0')
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('org.springframework.security:spring-security-test')

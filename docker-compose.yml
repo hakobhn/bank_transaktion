@@ -1,47 +1,35 @@
 # Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
 
-version: '3.7'
+version: '2.1'
 
 # Define services
 services:
-  # App backend service
-  app-server:
-    # Configuration for building the docker image for the backend service
-    build:
-      context: .
-      dockerfile: ./src/main/docker/Dockerfile
-    depends_on:
-      - db # This service depends on mysql. Start that first.
-    ports:
-      - 8090:8090
-    restart: always
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/bank_transaction?useUnicode=true&characterEncoding=utf8&useSSL=false
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
-    networks: # Networks to join (Services on the same network can communicate with each other using their name)
-      - backend
 
   # Database Service (Mysql)
   db:
-    image: mysql:5.7
-    ports:
-      - "3306:3306"
-    restart: always
+    container_name: bank-db
+    image: 'mysql/mysql-server:5.7'
+    volumes:
+      - ./dbdata:/var/lib/mysql
     environment:
       MYSQL_DATABASE: bank_transaction
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - '3301:3306'
+    restart: always
+
+  # App backend service
+  app-server:
+    # Configuration for building the docker image for the spring boot mvc
+    image: bank-spring-boot-app
+    build:
+      context: .
+      dockerfile: ./src/main/docker/Dockerfile
+    ports:
+      - 8091:8090
     volumes:
-      - db-data:/var/lib/mysql
-    networks:
-      - backend
-
-# Volumes
-volumes:
-  db-data:
-
-# Networks to be created to facilitate communication between containers
-networks:
-  backend:
+      - /data/bank-spring-boot-app
+    depends_on:
+      db:
+        condition: service_healthy

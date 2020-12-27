@@ -1,9 +1,0 @@
-{
-    "elements": {},
-    "attributes": {
-        "layout:decorator": {
-            "context": "html"
-        },
-        "layout:fragment": {}
-    }
-}

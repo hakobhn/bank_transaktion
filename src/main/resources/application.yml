@@ -5,16 +5,12 @@ spring:
     ## Hibernate Properties
     hibernate:
       # Hibernate ddl auto (create, create-drop, validate, update)
-      ddl-auto: create
+      ddl-auto: update
       # The SQL dialect makes Hibernate generate better SQL for the chosen database
-      dialect: org.hibernate.dialect.MySQL5Dialect
+      dialect: org.hibernate.dialect.MySQL5InnoDBDialect
   ## Spring DATA SOURCE Configurations
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    initialization-mode: always
-    # HikaryCP Properties
-    hikari:
-      initialization-fail-timeout: -1
   thymeleaf:
     cache: false
     check-template: true
