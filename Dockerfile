@@ -8,5 +8,5 @@ RUN gradle build --info
 
 FROM openjdk:14-jdk-alpine AS prod-stage
 WORKDIR /app
-COPY --from=build-stage /build/build/libs/*.jar /app/
-ENTRYPOINT ["java", "-jar", "bank-service'-0.0.1-SNAPSHOT.jar"]
+COPY --from=build-stage /build/build/libs/bank-service-0.0.1-SNAPSHOT.jar /app/app.jar
+ENTRYPOINT ["java","-jar","-Dspring.profiles.active=docker","app.jar"]

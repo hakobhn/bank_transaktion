@@ -1,9 +1,9 @@
 spring:
   ## Spring DATA SOURCE Configurations
   datasource:
-    url: jdbc:mysql://localhost:3306/bank_transaction?useUnicode=true&characterEncoding=utf8&useSSL=false
-    username: root
-    password: ENC(LTXFhqlXnfBYyGPUkinQ/w==)
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
 
 #Admin app admin user credentials
 root:

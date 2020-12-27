@@ -28,6 +28,7 @@ services:
     networks:
       - banknet
     environment:
+      - MYSQL_ROOT_HOST='%'
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=bank
     healthcheck:
