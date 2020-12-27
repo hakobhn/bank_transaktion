@@ -1,34 +1,47 @@
-version: '2.1'
+# Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
 
+version: '3.7'
+
+# Define services
 services:
-  app-main:
-    image: app-main-image
+  # App backend service
+  app-server:
+    # Configuration for building the docker image for the backend service
     build:
       context: .
       dockerfile: ./src/main/docker/Dockerfile
     depends_on:
-      mysql:
-        condition: service_healthy
+      - db # This service depends on mysql. Start that first.
     ports:
       - 8090:8090
-    environment:
-      - DATABASE_HOST=mysql
-      - DATABASE_USER=root
-      - DATABASE_PASSWORD=neovision
-      - DATABASE_NAME=bank_transaction
-      - DATABASE_PORT=33061
     restart: always
-  mysql:
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/bank_transaction?useUnicode=true&characterEncoding=utf8&useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    networks: # Networks to join (Services on the same network can communicate with each other using their name)
+      - backend
+
+  # Database Service (Mysql)
+  db:
     image: mysql:5.7
-    environment:
-      - MYSQL_ROOT_PASSWORD=neovision
-      - MYSQL_DATABASE=bank_transaction
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=neovision
     ports:
-      - 33061:3306
-    volumes:
-      - ./data/:/var/lib/mysql
+      - "3306:3306"
     restart: always
-    healthcheck:
-      test: out=$$(mysqladmin ping -h localhost -P 3306 -u root --password=neovision 2>&1); echo $$out | grep 'mysqld is alive' || { echo $$out; exit 1; }
+    environment:
+      MYSQL_DATABASE: bank_transaction
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - backend
+
+# Volumes
+volumes:
+  db-data:
+
+# Networks to be created to facilitate communication between containers
+networks:
+  backend:

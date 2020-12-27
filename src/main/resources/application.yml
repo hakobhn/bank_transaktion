@@ -11,6 +11,7 @@ spring:
   ## Spring DATA SOURCE Configurations
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
+    initialization-mode: always
     # HikaryCP Properties
     hikari:
       initialization-fail-timeout: -1
