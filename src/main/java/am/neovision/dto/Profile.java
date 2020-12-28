@@ -6,6 +6,7 @@ import lombok.Data;
 public class Profile {
     private String fullName;
     private String avatar;
+    private String uuid;
     private String email;
     private Currency currency;
 }

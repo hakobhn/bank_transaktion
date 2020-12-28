@@ -15,7 +15,7 @@ public class BankAccountAdd extends AbstractDto {
     private String number;
 
     @NotNull(message = "Amount is required")
-    private Float amount;
+    private String amount;
 
     @NotNull(message = "Currency is required")
     private Currency currency;

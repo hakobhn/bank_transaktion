@@ -45,8 +45,8 @@ public class AccountValidator implements Validator {
             errors.rejectValue("email", "email.is.restricted", "Provided email address is restricted.");
         }
         Optional.ofNullable(accountService.findByEmail(account.getEmail()))
-                .ifPresent(usr -> {
-                            if (!usr.getUuid().equals(account.getUuid())) {
+                .ifPresent(acc -> {
+                            if (!acc.getUuid().equals(account.getUuid())) {
                                 errors.rejectValue("email", "email.in.us", "Provided email address is already being used");
                             }
                         }

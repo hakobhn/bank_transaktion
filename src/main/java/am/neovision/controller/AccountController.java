@@ -107,22 +107,22 @@ public class AccountController extends AbstractController {
     }
 
     @PostMapping(value = "/save")
-    public String save( @ModelAttribute("user") @Validated AccountAdd account,
+    public String save( @ModelAttribute("account") @Validated AccountAdd account,
                        final BindingResult bindingResult, final RedirectAttributes ra) {
 
         accountValidator.validate(account, bindingResult);
-        if (StringUtils.isNoneBlank(account.getUuid())) {
-            accountService.edit(account);
-            ra.addFlashAttribute("successFlash", "User updated successfully.");
-        } else {
-            accountService.add(account);
-            ra.addFlashAttribute("successFlash", "User added successfully.");
-        }
         if (bindingResult.hasErrors()) {
             ra.addFlashAttribute("org.springframework.validation.BindingResult.account", bindingResult);
             ra.addFlashAttribute("account", account);
             return "redirect:/accounts/add";
         } else {
+            if (StringUtils.isNoneBlank(account.getUuid())) {
+                accountService.edit(account);
+                ra.addFlashAttribute("successFlash", "User updated successfully.");
+            } else {
+                accountService.add(account);
+                ra.addFlashAttribute("successFlash", "User added successfully.");
+            }
             return "redirect:/accounts";
         }
     }
@@ -160,6 +160,7 @@ public class AccountController extends AbstractController {
         Profile profile = new Profile();
         profile.setFullName(accountDto.getFirstName() + " " + accountDto.getLastName());
         profile.setEmail(accountDto.getEmail());
+        profile.setUuid(accountDto.getUuid());
         profile.setCurrency(accountDto.getCurrency());
 
         if (StringUtils.isNoneBlank(accountDto.getAvatar())) {
@@ -194,6 +195,7 @@ public class AccountController extends AbstractController {
         Profile profile = new Profile();
         profile.setFullName(accountDto.getFirstName() + " " + accountDto.getLastName());
         profile.setEmail(accountDto.getEmail());
+        profile.setUuid(accountDto.getUuid());
         profile.setCurrency(accountDto.getCurrency());
 
         if (StringUtils.isNoneBlank(accountDto.getAvatar())) {

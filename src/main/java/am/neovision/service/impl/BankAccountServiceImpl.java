@@ -2,10 +2,13 @@ package am.neovision.service.impl;
 
 import am.neovision.converter.BankAccountToDtoConverter;
 import am.neovision.domain.AbstractRepository;
+import am.neovision.domain.model.Account;
 import am.neovision.domain.model.BankAccount;
+import am.neovision.domain.repository.AccountRepository;
 import am.neovision.domain.repository.BankAccountRepository;
 import am.neovision.dto.BankAccountAdd;
 import am.neovision.dto.BankAccountDto;
+import am.neovision.exceptions.NotFoundException;
 import am.neovision.service.AbstractService;
 import am.neovision.service.BankAccountService;
 import am.neovision.util.StringUtil;
@@ -15,12 +18,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 /**
  * @author hakob.hakobyan created on 11/20/2020
  */
 @Slf4j
 @Service("bankAccountService")
 public class BankAccountServiceImpl extends AbstractService<BankAccount, BankAccountDto> implements BankAccountService {
+
+    @Autowired
+    private AccountRepository accountRepository;
 
     @Autowired
     private BankAccountRepository bankAccountRepository;
@@ -38,10 +46,30 @@ public class BankAccountServiceImpl extends AbstractService<BankAccount, BankAcc
         return bankAccountToDtoConverter;
     }
 
+    @Override
+    public Optional<BankAccountDto> findByNumber(String number) {
+        return bankAccountRepository.findByNumber(number)
+                .map(bankAccountToDtoConverter::convert);
+    }
+
     public BankAccountDto add(BankAccountAdd bankAccountAdd) {
-        BankAccount account = new BankAccount();
-        BeanUtils.copyProperties(bankAccountAdd, account);
-        account.setUuid(StringUtil.generateUUID());
-        return save(account);
+        BankAccount bankAccount = new BankAccount();
+        bankAccount.setOwner(accountRepository.findByUuid(bankAccountAdd.getOwnerUuid()).orElseThrow(NotFoundException::new));
+        bankAccount.setCurrency(bankAccountAdd.getCurrency());
+        bankAccount.setNumber(bankAccountAdd.getNumber().replaceAll("[^0-9]", ""));
+        bankAccount.setAmount( Float.parseFloat(bankAccountAdd.getAmount().replaceAll("[^a-zA-Z0-9\\s.]", "")));
+        bankAccount.setUuid(StringUtil.generateUUID());
+        return save(bankAccount);
+    }
+
+    public BankAccountDto edit(BankAccountAdd bankAccountAdd) {
+        BankAccount bankAccount = bankAccountRepository.findByUuid(bankAccountAdd.getUuid()).orElseThrow(NotFoundException::new);
+        BeanUtils.copyProperties(bankAccountAdd, bankAccount);
+        return save(bankAccount);
+    }
+
+    public void delete(String uuid) {
+        BankAccount bankAccount = bankAccountRepository.findByUuid(uuid).orElseThrow(NotFoundException::new);
+        delete(bankAccount.getId());
     }
 }
