@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout">
 <head>
-    <title th:text='${action +" account"}'></title>
+    <title th:text='${action}'></title>
 </head>
 <body>
 <div layout:fragment="content">
@@ -67,20 +67,6 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="box-body">
-                            <div class="form-group">
-                                <label for="currency">Currency</label>
-                                <select th:field="*{currency}" id="currency" data-placeholder="Select currency"
-                                        th:classappend="${#fields.hasErrors('currency')} ? 'is-invalid' : ''"
-                                        class="form-control select2" style="width: 100%;">
-                                    <option value="">Select a currency</option>
-                                    <option th:each="currency : ${currencies}"
-                                            th:field="*{currency}"
-                                            th:value="${currency}"
-                                            th:text="${currency}">Currency</option>
-                                </select>
-                                <span class="error text-danger" th:if="${#fields.hasErrors('currency')}"
-                                      th:errors="*{currency}">Currency error</span>
-                            </div>
                             <div class="form-group">
                                 <label for="avatar">Avatar</label>
                                 <input type="text" th:classappend="${#fields.hasErrors('avatar')} ? 'is-invalid' : ''"

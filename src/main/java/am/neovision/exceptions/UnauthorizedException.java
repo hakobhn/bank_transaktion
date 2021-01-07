@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author hakob.hakobyan created on 9/15/2020
  */
 @NoArgsConstructor
-@ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Requested resource could not be found")
-public class NotFoundException extends RuntimeException {
-    public NotFoundException(String message) {
+@ResponseStatus(code = HttpStatus.UNAUTHORIZED, reason = "Requested resource is restricted and requires authentication")
+public class UnauthorizedException extends RuntimeException {
+    public UnauthorizedException(String message) {
         super(message);
     }
 
-    public NotFoundException(String message, Throwable cause) {
+    public UnauthorizedException(String message, Throwable cause) {
         super(message, cause);
     }
 }

@@ -1,12 +1,10 @@
 package am.neovision.controller;
 
-import am.neovision.converter.RequestToDatatableRequestConverter;
-import am.neovision.domain.model.BankAccount;
+import am.neovision.dto.*;
 import am.neovision.exceptions.PermissionDenied;
 import am.neovision.payload.ApiResponse;
 import am.neovision.service.impl.AccountService;
 import am.neovision.validator.AccountValidator;
-import am.neovision.dto.*;
 import groovy.util.logging.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -29,9 +27,6 @@ import java.util.Optional;
 @Controller
 @RequestMapping("accounts")
 public class AccountController extends AbstractController {
-
-    @Autowired
-    private RequestToDatatableRequestConverter requestToDtReqConverter;
 
     @Autowired
     private AccountService accountService;
@@ -78,8 +73,7 @@ public class AccountController extends AbstractController {
     public String add(Model model) {
         section.setDescription("Add new account");
 
-        model.addAttribute("action", "Add");
-        model.addAttribute("currencies", Currency.values());
+        model.addAttribute("action", "Add new account ");
 
         if (!model.containsAttribute("account")) {
             model.addAttribute("account", new AccountAdd());
@@ -91,9 +85,11 @@ public class AccountController extends AbstractController {
     public String edit(@PathVariable String uuid, Model model) {
         section.setDescription("Edit account");
 
+        AccountDto accountInfo = accountService.findByUUID(uuid);
+
+        model.addAttribute("action", "Edit " + accountInfo.getFirstName()+" "+accountInfo.getLastName()+"'s account");
         model.addAttribute("currencies", Currency.values());
 
-        AccountDto accountInfo = accountService.findByUUID(uuid);
         if (accountInfo.getAvatar().contains("/dist/img/avatar")) {
             accountInfo.setAvatar("");
         }
@@ -107,7 +103,7 @@ public class AccountController extends AbstractController {
     }
 
     @PostMapping(value = "/save")
-    public String save( @ModelAttribute("account") @Validated AccountAdd account,
+    public String save(@ModelAttribute("account") @Validated AccountAdd account,
                        final BindingResult bindingResult, final RedirectAttributes ra) {
 
         accountValidator.validate(account, bindingResult);
@@ -129,13 +125,8 @@ public class AccountController extends AbstractController {
 
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> delete(@RequestParam String uuid) {
-//        try {
         accountService.delete(uuid);
-//        } catch (Exception e) {
-//            return new ResponseEntity(new ApiResponse(false, "Could not delete user. Please try again later!"),
-//                    HttpStatus.BAD_REQUEST);
-//        }
-        return new ResponseEntity(new ApiResponse(true, "Success"), HttpStatus.OK);
+        return new ResponseEntity(new ApiResponse(true, "Success", "Account deleted successfully", HttpStatus.OK.value(), null ), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/profile/{uuid}", method = RequestMethod.GET)
@@ -143,45 +134,13 @@ public class AccountController extends AbstractController {
         section.setTitle("Profile");
         section.setDescription("User Profile");
 
-        if(accountService.isAdmin()) {
+        if (accountService.isAdmin()) {
             model.addAttribute("bankAccount", new BankAccountAdd());
             model.addAttribute("currencies", Currency.values());
-        }
-
-        Optional.ofNullable(accountService.getCurrentAccount()).ifPresent(
-        acc -> {
-            if (!acc.getUuid().equals(uuid)) {
-                throw new PermissionDenied("Not allowed to get data.");
-            }
-        });
-
-        AccountDto accountDto = accountService.findByUUID(uuid);
-
-        Profile profile = new Profile();
-        profile.setFullName(accountDto.getFirstName() + " " + accountDto.getLastName());
-        profile.setEmail(accountDto.getEmail());
-        profile.setUuid(accountDto.getUuid());
-        profile.setCurrency(accountDto.getCurrency());
-
-        if (StringUtils.isNoneBlank(accountDto.getAvatar())) {
-            profile.setAvatar(accountDto.getAvatar());
         } else {
-            if (accountDto.getGender() != null && accountDto.getGender().equals(Gender.FEMALE)) {
-                profile.setAvatar("/dist/img/avatar-female.jpg");
-            } else {
-                profile.setAvatar("/dist/img/avatar-male.jpg");
-            }
+            model.addAttribute("transaction", new TransactionAdd());
+            model.addAttribute("transactionTypes", TransactionType.values());
         }
-
-        model.addAttribute("profile", profile);
-
-        return "accounts/profile";
-    }
-
-    @RequestMapping(value = "/accounts/{uuid}", method = RequestMethod.GET)
-    public String bankAccounts(@PathVariable String uuid, Model model) {
-        section.setTitle("Profile");
-        section.setDescription("User Profile");
 
         Optional.ofNullable(accountService.getCurrentAccount()).ifPresent(
                 acc -> {
@@ -196,7 +155,6 @@ public class AccountController extends AbstractController {
         profile.setFullName(accountDto.getFirstName() + " " + accountDto.getLastName());
         profile.setEmail(accountDto.getEmail());
         profile.setUuid(accountDto.getUuid());
-        profile.setCurrency(accountDto.getCurrency());
 
         if (StringUtils.isNoneBlank(accountDto.getAvatar())) {
             profile.setAvatar(accountDto.getAvatar());

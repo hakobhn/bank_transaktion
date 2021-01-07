@@ -2,7 +2,7 @@ $.fn.dataTable.ext.errMode = 'none';
 
 let bankAccountsDatatable = {};
 
-function initBankAccounts() {
+function initBankAccounts(ownerUuid) {
     bankAccountsDatatable = $("#datatable_bank_accounts").DataTable({
         "paging": true,
         "processing": true,
@@ -24,7 +24,7 @@ function initBankAccounts() {
             $("#datatable_bank_accounts_filter label").hide();
         },
         "ajax": {
-            "url": "/bank_accounts/data",
+            "url": "/bank_accounts/data_owner/"+ownerUuid,
             "type": "POST",
             "datatype": "json",
             "dataSrc": function (response) {
@@ -43,8 +43,15 @@ function initBankAccounts() {
                     let result = '<div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">\n' +
                         '                                        <div class="card bg-light w-100">\n' +
                         '                                            <div class="card-header text-muted border-bottom-0">\n' +
-                        '                                                '+row['number'] +
-                        '                                            </div>\n' +
+                        '                                                <h3 class="card-title font-weight-bold">'+row["number"]+'</h3>\n';
+                    if (isAdmin) {
+                        result += '<div class="card-tools">\n' +
+                            '                  <button type="button" class="btn btn-sm btn-danger mt-0" title="Remove bank account" onclick="deleteBankAccount(\''+row["uuid"]+'\')">' +
+                            '                      <i class="fas fa-trash"></i>\n' +
+                            '                  </button>\n' +
+                            '                </div>';
+                    }
+                    result +='                                            </div>\n'+
                         '                                            <div class="card-body pt-0">\n' +
                         '                                                <div class="row">\n' +
                         '                                                    <!-- Heading -->\n' +
@@ -57,16 +64,16 @@ function initBankAccounts() {
                         '                                            </div>\n' +
                         '                                            <span class="card-footer">\n' +
                         '                                                <span>\n' +
-                        '                                                    <a href="#" class="btn btn-sm btn-primary">\n' +
+                        '                                                    <a href="/transactions/list_bank_account/'+row['uuid']+'" class="btn btn-sm btn-primary">\n' +
                         '                                                        <i class="fas fa-list"></i> Transactions\n' +
                         '                                                    </a>\n' +
                         '                                                </span>\n';
                     if (!isAdmin) {
                         result += '                                      <span>\n' +
-                            '                                                    <a href="#" class="btn btn-sm btn-primary">\n' +
-                            '                                                        <i class="fas fa-hand-holding-usd"></i> Make transaction\n' +
-                            '                                                    </a>\n' +
-                            '                                                </span>\n';
+                            '                                                 <a href="javascript:void(0);" id="'+row['number']+'" data-currency="'+row['currency']+'" class="make_transaction btn btn-sm btn-primary">\n' +
+                            '                                                      <i class="fas fa-hand-holding-usd"></i> Make transaction\n' +
+                            '                                                 </a>\n' +
+                            '                                            </span>\n';
                     }
                     result +='                                       </div>\n' +
                         '                                        </div>\n' +
@@ -78,56 +85,62 @@ function initBankAccounts() {
     });
 }
 
+function deleteBankAccount(uuid) {
+    $('#delete_bank_account_uuid').val(uuid);
+    $("#delete_confirmation .close").on("click", function(e) {
+        $("#delete_confirmation").modal('hide');
+    });
+    $('#delete_confirmation').modal('show');
+}
+
+$(document).on("click", "#delete_confirmation .confirm", function(e) {
+    let uuid = $('#delete_bank_account_uuid').val();
+    $.ajax({
+        url: "/bank_accounts/delete?uuid="+uuid,
+        type: "DELETE",
+        success: function (data) {
+            bankAccountsDatatable.ajax.reload(null, false);
+            $("#delete_confirmation").modal('hide');
+            $('#delete_account_id').val('');
+        },
+        error: function (xhr, status, err) {
+            alertError(xhr);
+        }
+    });
+});
+
 
 $("#bank_account-modal .confirm").prop('disabled', true);
 
-$(document).ready(function (){
-    initAmount();
-
-    var url = new URL(window.location.href);
-    var bankAccountUuid = url.searchParams.get("showBankAccount");
-    if (bankAccountUuid == true) {
-        showDetails();
-    }
-});
-
-function showDetails() {
-
-    $('#process-modal').modal({
-        show: true
-    });
-}
-
-$(document).on('change', '#currency', function() {
-    initAmount();
+$(document).on('change', '#bank_account_currency', function() {
+    initBankAccountAmount();
 });
 
 $('#bank_account-form').on('keyup change paste', 'input, select', function(){
-    validateData();
+    validateBankAccount();
 });
 
-function initAmount() {
-    var currency = $("#currency").val();
+function initBankAccountAmount() {
+    var currency = $("#bank_account_currency").val();
     if (currency == "USD") {
         $("#amount").attr('data-inputmask', "'alias': 'currency', 'rightAlign': false, 'prefix': '$ ','min':0,'max':1000000");
-    } else if (currency == "EURO") {
+    } else if (currency == "EUR") {
         $("#amount").attr('data-inputmask', "'alias': 'currency', 'rightAlign': false, 'prefix': '€ ','min':0,'max':1000000");
     } else if (currency == "GBP") {
         $("#amount").attr('data-inputmask', "'alias': 'currency', 'rightAlign': false, 'prefix': '£ ','min':0,'max':1000000");
     }
-    $("#amount").val(0);
+    $("#bank_account_amount").val(0);
     $('[data-mask]').inputmask();
 }
 
-function validateData() {
-    if($("#number").val().replace(/\D/g,'').length == 16 &&
-        parseInt($("#amount").val().replace(/\D/g,'')) > 0 ) {
+function validateBankAccount() {
+    if($("#bank_account_number").val().replace(/\D/g,'').length == 16 &&
+        parseInt($("#bank_account_amount").val().replace(/\D/g,'')) > 0 ) {
         $("#bank_account-modal .confirm").prop('disabled', false);
     } else {
         $("#bank_account-modal .confirm").prop('disabled', true);
     }
 }
-
 
 $(document).on("click", "#add_bank_account", function(e) {
     $('#bank_account-modal').modal({
@@ -148,11 +161,68 @@ $(document).on("click", "#bank_account-modal .confirm", function(e) {
             bankAccountsDatatable.ajax.reload(null, false);
         },
         error: function (xhr, status, err) {
-            var errorMsg = "Server returns error."
-            try {
-                errorMsg = JSON.parse(xhr.responseText).message;
-            } catch (e) { }
-            showError('Show details failed.', "Session expired", errorMsg);
+            alertError(xhr);
+        }
+    });
+});
+
+
+
+
+
+
+
+$("#make_transaction-modal .confirm").prop('disabled', true);
+
+$('#make_transaction-form').on('keyup change paste', 'input, select', function(){
+    validateTransaction();
+});
+
+function initTransactionAmount(currency) {
+    if (currency == "USD") {
+        $("#transaction_amount").attr('data-inputmask', "'alias': 'currency', 'rightAlign': false, 'prefix': '$ ','min':0,'max':1000000");
+    } else if (currency == "EUR") {
+        $("#transaction_amount").attr('data-inputmask', "'alias': 'currency', 'rightAlign': false, 'prefix': '€ ','min':0,'max':1000000");
+    } else if (currency == "GBP") {
+        $("#transaction_amount").attr('data-inputmask', "'alias': 'currency', 'rightAlign': false, 'prefix': '£ ','min':0,'max':1000000");
+    }
+    $("#transaction_amount").val(0);
+    $('[data-mask]').inputmask();
+}
+
+function validateTransaction() {
+    if($("#transaction_to_number").val().replace(/\D/g,'').length == 16 &&
+        parseInt($("#transaction_amount").val().replace(/\D/g,'')) > 0 ) {
+        $("#make_transaction-modal .confirm").prop('disabled', false);
+    } else {
+        $("#make_transaction-modal .confirm").prop('disabled', true);
+    }
+}
+
+$(document).on("click", ".make_transaction", function(e) {
+    // console.log("FromNumber: "+$(this).attr("id"));
+    $("#make_transaction_from_number").val($(this).attr("id"));
+
+    initTransactionAmount($(this).attr("data_currency"));
+
+    $('#make_transaction-modal').modal({
+        show: true
+    });
+});
+
+$(document).on("click", "#make_transaction-modal .confirm", function(e) {
+    var form = $("#make_transaction-form");
+    console.log(JSON.stringify(form.serialize()));
+    $.ajax({
+        url: "/transactions/add",
+        type: 'POST',
+        data: form.serialize(),
+        success: function (data) {
+            $("#make_transaction-modal").modal('hide');
+            $('#make_transaction-form').trigger("reset");
+        },
+        error: function (xhr, status, err) {
+            alertError(xhr);
         }
     });
 });

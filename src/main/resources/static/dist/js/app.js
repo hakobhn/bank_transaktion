@@ -3,6 +3,33 @@ const APP_CONSTANTS = {
     unknown: "unknown"
 }
 
+function alertError(xhr) {
+    var title = "Request failed";
+    var subtitle = "400 Bad Request";
+    var message = "Server returns error";
+    try {
+        // console.log("responseText: " + JSON.stringify(xhr.responseText));
+        var response = JSON.parse(xhr.responseText);
+
+        title = response.title;
+        message = response.message;
+        if (response.code == 400) {
+            subtitle = "400 Bad Request";
+        } else if (response.code == 401) {
+            subtitle = "401 Unauthorized";
+        } else if (response.code == 403) {
+            subtitle = "403 Forbidden";
+        } else if (response.code == 404) {
+            subtitle = "404 Not Found";
+        } else if (response.code == 406) {
+            subtitle = "406 Not Acceptable";
+        } else if (response.code == 500) {
+            subtitle = "500 Internal Server Error";
+            title = "We will work on fixing that right away";
+        }
+    } catch (e) { }
+    showError(title, subtitle, message);
+}
 
 function showError(title, subtitle, message) {
     showMessage('bg-danger', title, subtitle, message);
@@ -152,6 +179,14 @@ function eraseCookie(name) {
 function cleanText(str) {
     return str.replace(/<\/?[^>]+(>|$)/g, "");
 }
+
+// Handle session expired error.
+$(document).ajaxError(function (event, jqxhr, settings, thrownError) {
+    // console.log("ajax error json: "+JSON.stringify(jqxhr));
+    if (jqxhr.responseText.indexOf("<title>Bank Admin | Log in</title>") !== -1) {
+        document.location.href = '/';
+    }
+});
 
 function printAccount(account, performDate) {
     let result = '<div class="user-block">\n' +

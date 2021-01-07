@@ -33,5 +33,4 @@ public class AccountAdd extends AbstractDto {
     private String avatar;
 
     private Gender gender = Gender.MALE;
-    private Currency currency;
 }

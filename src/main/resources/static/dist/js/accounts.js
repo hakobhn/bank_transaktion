@@ -76,7 +76,7 @@ function initAccounts() {
                         result = '<div class="container">\n' +
                             '       <div class="row">' +
                             '             <div class="col-12 col-md-3">' +
-                            '                 <a alt="Manage bank accounts" href="/accounts/bank_accounts/'+ row["uuid"]+'" class="btn btn-sm bg-teal">' +
+                            '                 <a alt="Manage bank accounts" href="/accounts/profile/'+ row["uuid"]+'" class="btn btn-sm bg-teal">' +
                             '                     <i class="fas fa-money-check"></i>' +
                             '                 </a>' +
                             '             </div>'+
@@ -117,7 +117,7 @@ $(document).on("click", "#delete_confirmation .confirm", function(e) {
 });
 
 function deleteAccount(accountId) {
-    console.log("Delete account id: " + accountId);
+    // console.log("Delete account id: " + accountId);
     $('#delete_account_id').val(accountId);
     $("#delete_confirmation .close").on("click", function(e) {
         $("#delete_confirmation").modal('hide');

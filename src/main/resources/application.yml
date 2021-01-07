@@ -70,3 +70,11 @@ login:
 jasypt:
   encryptor:
     algorithm: PBEWithMD5AndDES
+
+# Rest client
+rest:
+  timeout: 3000
+
+# Notification service
+exchange-service:
+  url: https://api.exchangeratesapi.io/latest?base=USD

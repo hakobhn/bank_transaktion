@@ -1,7 +1,7 @@
 package am.neovision.dto;
 
 public enum Currency {
-    EURO("EURO"),
+    EUR("EUR"),
     USD("USD"),
     GBP("GBP");
 

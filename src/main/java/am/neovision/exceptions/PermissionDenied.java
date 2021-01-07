@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 /**
  * @author hakob.hakobyan created on 9/1/2020
  */
-@ResponseStatus(code = HttpStatus.FORBIDDEN, reason = "entity forbidden")
+@ResponseStatus(code = HttpStatus.FORBIDDEN, reason = "You don't have permission to access the resource")
 public class PermissionDenied extends RuntimeException {
 
     public PermissionDenied(String message) {

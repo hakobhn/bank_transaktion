@@ -76,7 +76,32 @@
         <!-- /.row -->
     </div><!-- /.container-fluid -->
 
-    <div th:if="${bankAccount != null}" class="modal fade" id="bank_account-modal">
+
+    <div th:if="${section.isAdmin()}" class="modal fade" id="delete_confirmation">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Confirmation</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <input type="hidden" id="delete_bank_account_uuid" />
+                <div class="modal-body">
+                    <p>Are you sure to delete bank account?</p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default close_modal" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary confirm">Delete</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <div th:if="${section.isAdmin() && bankAccount != null}" class="modal fade" id="bank_account-modal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -92,14 +117,14 @@
                         <input class="form-control" type="hidden" name="ownerUuid" th:value="${profile.uuid}"/>
 
                         <div class="form-group">
-                            <label for="number">Number</label>
+                            <label for="bank_account_number">Number</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-credit-card"></i></span>
                                 </div>
                                 <input type="text" th:classappend="${#fields.hasErrors('number')} ? 'is-invalid' : ''"
                                        class="form-control"
-                                       th:field="*{number}" id="number"
+                                       th:field="*{number}" id="bank_account_number"
                                        data-inputmask='"mask": "9999-9999-9999-9999"' data-mask>
                                 <span class="error text-danger" th:if="${#fields.hasErrors('number')}"
                                       th:errors="*{number}">Number error</span>
@@ -114,7 +139,7 @@
                                 </div>
                                 <input type="text" th:classappend="${#fields.hasErrors('amount')} ? 'is-invalid' : ''"
                                        class="form-control"
-                                       th:field="*{amount}" id="amount"
+                                       th:field="*{amount}" id="bank_account_amount"
                                        data-inputmask="'alias': 'currency', 'rightAlign': false,
                                        'prefix': '$ ','min':0,'max':1000000" data-mask>
                                 <span class="error text-danger" th:if="${#fields.hasErrors('amount')}"
@@ -123,8 +148,8 @@
                             <!-- /.input group -->
                         </div>
                         <div class="form-group">
-                            <label for="currency">Currency</label>
-                            <select th:field="*{currency}" id="currency" data-placeholder="Select a currency"
+                            <label for="bank_account_currency">Currency</label>
+                            <select th:field="*{currency}" id="bank_account_currency" data-placeholder="Select a currency"
                                     th:classappend="${#fields.hasErrors('currency')} ? 'is-invalid' : ''"
                                     class="form-control select2" style="width: 100%;">
                                 <option th:each="curr : ${currencies}"
@@ -148,6 +173,78 @@
     </div>
     <!-- /.modal -->
 
+    <div th:if="${!section.isAdmin() && transaction != null}" class="modal fade" id="make_transaction-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Make new transaction</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="make_transaction-form" data-toggle="validator" role="form" th:object="${transaction}"
+                          th:action="@{/transactions/add}"
+                          autocomplete="off" method="post">
+                        <input id="make_transaction_from_number" class="form-control" type="hidden" name="fromNumber"/>
+
+                        <div class="form-group">
+                            <label for="transaction_to_number">Number</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-credit-card"></i></span>
+                                </div>
+                                <input type="text" th:classappend="${#fields.hasErrors('toNumber')} ? 'is-invalid' : ''"
+                                       class="form-control"
+                                       th:field="*{toNumber}" id="transaction_to_number"
+                                       data-inputmask='"mask": "9999-9999-9999-9999"' data-mask>
+                                <span class="error text-danger" th:if="${#fields.hasErrors('toNumber')}"
+                                      th:errors="*{toNumber}">Number error</span>
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                        <div class="form-group">
+                            <label for="transaction_amount">Amount</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-coins"></i></span>
+                                </div>
+                                <input type="text" th:classappend="${#fields.hasErrors('amount')} ? 'is-invalid' : ''"
+                                       class="form-control"
+                                       th:field="*{amount}" id="transaction_amount"
+                                       data-inputmask="'alias': 'currency', 'rightAlign': false,
+                                       'prefix': '$ ','min':0,'max':1000000" data-mask>
+                                <span class="error text-danger" th:if="${#fields.hasErrors('amount')}"
+                                      th:errors="*{amount}">Amount error</span>
+                            </div>
+                            <!-- /.input group -->
+                            <div class="form-group">
+                                <label for="transaction_type">Type</label>
+                                <select th:field="*{type}" id="transaction_type" data-placeholder="Select a type"
+                                        th:classappend="${#fields.hasErrors('type')} ? 'is-invalid' : ''"
+                                        class="form-control select2" style="width: 100%;">
+                                    <option th:each="type : ${transactionTypes}"
+                                            th:field="*{type}"
+                                            th:value="${type.name()}"
+                                            th:text="${type.name()}">Type</option>
+                                </select>
+                                <span class="error text-danger" th:if="${#fields.hasErrors('type')}"
+                                      th:errors="*{type}">Type error</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-right">
+                    <button type="button" class="btn btn-default cancel" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary confirm">Make</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
     <!-- DataTables -->
     <script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
     <script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
@@ -160,21 +257,20 @@
     <script th:src="@{/dist/js/profile.js}"></script>
 
     <script th:inline="javascript">
+        /*<![CDATA[*/
+
+        var isAdmin = /*[[${section.isAdmin()}]]*/ 'false';
+        var ownerUuid = /*[[${profile.uuid}]]*/ '';
+
+        /*]]>*/
         $(function () {
             //Initialize Select2 Elements
             $('.select2').select2();
 
             $('[data-mask]').inputmask();
 
-            initBankAccounts();
+            initBankAccounts(ownerUuid);
         });
-
-        /*<![CDATA[*/
-
-        var isAdmin = /*[[${section.isAdmin()}]]*/ 'false';
-        console.log(isAdmin);
-
-        /*]]>*/
     </script>
 
 </div>

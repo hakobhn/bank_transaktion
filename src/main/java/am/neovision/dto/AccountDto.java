@@ -11,5 +11,4 @@ public class AccountDto extends AbstractDto {
     private String lastName;
     private String avatar;
     private Gender gender;
-    private Currency currency;
 }

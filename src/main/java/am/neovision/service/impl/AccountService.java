@@ -104,14 +104,14 @@ public class AccountService extends AbstractService<Account, AccountDto> impleme
                                 List.of(new SimpleGrantedAuthority("ADMIN")))
                 )
                 .orElseGet(
-                    () -> {
-                        if (email.equals(rootEmail)) {
-                            return buildUserForAuthentication(rootEmail, bCryptPasswordEncoder.encode(rootPassword),
-                                    List.of(new SimpleGrantedAuthority("ADMIN")));
-                        } else {
-                            throw new UsernameNotFoundException("Email not found");
+                        () -> {
+                            if (email.equals(rootEmail)) {
+                                return buildUserForAuthentication(rootEmail, bCryptPasswordEncoder.encode(rootPassword),
+                                        List.of(new SimpleGrantedAuthority("ADMIN")));
+                            } else {
+                                throw new UsernameNotFoundException("Email not found");
+                            }
                         }
-                    }
                 );
 
         return principal;

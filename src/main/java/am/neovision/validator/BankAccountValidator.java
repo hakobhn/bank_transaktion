@@ -3,17 +3,10 @@ package am.neovision.validator;
 import am.neovision.dto.AccountAdd;
 import am.neovision.dto.BankAccountAdd;
 import am.neovision.service.BankAccountService;
-import am.neovision.service.impl.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.Optional;
 
 @Service
 public class BankAccountValidator implements Validator {

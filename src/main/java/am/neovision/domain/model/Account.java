@@ -49,6 +49,6 @@ public class Account extends AbstractModel<Long> {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @OneToMany(mappedBy="owner", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
     private Set<BankAccount> bankAccounts;
 }

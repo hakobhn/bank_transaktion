@@ -1,8 +1,8 @@
-let tasksDatatable = {};
+let transactionsDatatable = {};
 
-function initSearchTasks(term) {
+function initSearchTransactions(term) {
 
-    tasksDatatable = $("#datatable_tasks").DataTable({
+    transactionsDatatable = $("#datatable_transactions").DataTable({
         "paging": true,
         "processing": true,
         "serverSide": true,
@@ -32,12 +32,12 @@ function initSearchTasks(term) {
             "search": term
         },
         "ajax": {
-            "url": "/management/tasks/data",
+            "url": "/transactions/data",
             "type": "POST",
             "datatype": "json",
             "dataSrc": function (response) {
                 // console.log("ajax load: "+JSON.stringify(response));
-                $('#tasks_count').html(response.recordsActive);
+                $('#transactions_count').html(response.recordsActive);
                 return response.data;
             },
         },
@@ -114,15 +114,14 @@ function initSearchTasks(term) {
                 "orderable": false,
                 "searchable": false,
                 "render": function (data, type, row) {
-                    return '<a class="btn btn-primary btn-sm" href="/management/tasks?showTask='+ data +'">\n' +
+                    return '<a class="btn btn-primary btn-sm" href="/transactions?show='+ data +'">\n' +
                         '        <i class="fas fa-list"></i> View\n' +
                         '   </a></span>\n';
                 }
             },
         ]
     });
-    $('#datatable_tasks_filter').append('<button class="btn-default ml-2" onclick="tasksDatatable.ajax.reload(null, false);">Refresh</button>');
-    $("#datatable_tasks_processing").css("visibility", "hidden");
+    $('#datatable_transactions_filter').append('<button class="btn-default ml-2" onclick="transactionsDatatable.ajax.reload(null, false);">Refresh</button>');
 }
 
 function getStatusView(status) {
@@ -157,11 +156,11 @@ function getStatusClass(status) {
     }
 }
 
-let usersDatatable = {};
+let accountsDatatable = {};
 
-function initSearchUsers(term) {
+function initSearchAccounts(term) {
 
-    usersDatatable = $("#datatable_users").DataTable({
+    accountsDatatable = $("#datatable_accounts").DataTable({
         "paging": true,
         "processing": true,
         "serverSide": true,
@@ -179,7 +178,7 @@ function initSearchUsers(term) {
             "search": term
         },
         "ajax": {
-            "url": "/users/data",
+            "url": "/accounts/data",
             "type": "POST",
             "datatype": "json",
             "dataSrc": function (response) {
@@ -249,5 +248,5 @@ function initSearchUsers(term) {
             },
         ]
     });
-    $('#datatable_users_filter').append('<button class="btn-default ml-2" onclick="usersDatatable.ajax.reload(null, false);">Refresh</button>')
+    $('#datatable_accounts_filter').append('<button class="btn-default ml-2" onclick="accountsDatatable.ajax.reload(null, false);">Refresh</button>')
 }

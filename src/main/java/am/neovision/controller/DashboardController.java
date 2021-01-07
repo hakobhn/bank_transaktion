@@ -47,6 +47,6 @@ public class DashboardController extends AbstractController {
             section.setTitle("Dashboard");
             dashboard = "account";
         }
-        return "dashboard/"+dashboard;
+        return "dashboard/" + dashboard;
     }
 }

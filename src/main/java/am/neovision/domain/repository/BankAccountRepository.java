@@ -16,4 +16,7 @@ public interface BankAccountRepository extends AbstractRepository<BankAccount, L
 
     @Query("select b from BankAccount b where b.number like %?1 ")
     Page<BankAccount> findBySearch(String search, Pageable pageable);
+
+    @Query("select b from BankAccount b where b.owner.uuid = ?1 and b.number like %?2 ")
+    Page<BankAccount> findByOwner(String ownerUuid, String search, Pageable pageable);
 }

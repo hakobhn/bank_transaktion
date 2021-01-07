@@ -1,9 +1,6 @@
 package am.neovision.service;
 
 
-import am.neovision.domain.model.BankAccount;
-import am.neovision.dto.AccountAdd;
-import am.neovision.dto.AccountDto;
 import am.neovision.dto.BankAccountAdd;
 import am.neovision.dto.BankAccountDto;
 import org.springframework.data.domain.Page;
@@ -22,4 +19,6 @@ public interface BankAccountService {
     void delete(String uuid);
 
     Page<BankAccountDto> list(String search, Pageable pageable);
+
+    Page<BankAccountDto> listForOwner(String ownerUuid, String search, Pageable pageable);
 }

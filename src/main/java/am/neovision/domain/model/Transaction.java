@@ -6,7 +6,7 @@
 package am.neovision.domain.model;
 
 import am.neovision.domain.AbstractModel;
-import am.neovision.dto.Currency;
+import am.neovision.dto.TransactionStatus;
 import am.neovision.dto.TransactionType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -29,8 +29,8 @@ public class Transaction extends AbstractModel<Long> {
     private String uuid;
 
     @NotBlank
-    @Column(unique = true, length=16)
-    private String number;
+    @Column(unique = true, length = 16)
+    private String serialNumber;
 
     @Column(columnDefinition = "DECIMAL(10,2)")
     private Float amount;
@@ -43,10 +43,10 @@ public class Transaction extends AbstractModel<Long> {
     @NotNull
     @Column(columnDefinition = "enum('PENDING', 'ACCEPTED', 'REJECTED', 'CANCELED')")
     @Enumerated(EnumType.STRING)
-    private Currency status;
+    private TransactionStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="FROM_BANK_ACCOUNT_ID", nullable=false)
+    @JoinColumn(name = "FROM_BANK_ACCOUNT_ID", nullable = false)
     private BankAccount fromAccount;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -75,6 +75,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/dashboard").hasAnyAuthority("ADMIN", "USER")
                 .antMatchers("/accounts/profile").hasAnyAuthority("ADMIN", "USER")
                 .antMatchers("/accounts/**").hasAnyAuthority("ADMIN")
+                .antMatchers("/bank_accounts/delete/**").hasAnyAuthority("ADMIN")
                 .anyRequest()
                 .authenticated().and()
                 .formLogin()

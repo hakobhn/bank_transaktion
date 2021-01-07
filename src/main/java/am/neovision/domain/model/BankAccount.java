@@ -29,19 +29,19 @@ public class BankAccount extends AbstractModel<Long> {
     private String uuid;
 
     @NotBlank
-    @Column(unique = true, length=16)
+    @Column(unique = true, length = 16)
     private String number;
 
     @Column(columnDefinition = "DECIMAL(10,2)")
     private Float amount;
 
     @NotNull
-    @Column(columnDefinition = "enum('EURO','USD', 'GPB')")
+    @Column(columnDefinition = "enum('EUR','USD', 'GPB')")
     @Enumerated(EnumType.STRING)
     private Currency currency;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="ACCOUNT_ID", nullable=false)
+    @JoinColumn(name = "ACCOUNT_ID", nullable = false)
     private Account owner;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "fromAccount", cascade = {CascadeType.ALL})
