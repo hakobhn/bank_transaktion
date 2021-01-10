@@ -13,6 +13,7 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -49,6 +50,6 @@ public class Account extends AbstractModel<Long> {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
-    private Set<BankAccount> bankAccounts;
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<BankAccount> bankAccounts = new HashSet<>();
 }

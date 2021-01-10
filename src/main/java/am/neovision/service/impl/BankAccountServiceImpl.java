@@ -7,7 +7,6 @@ import am.neovision.domain.repository.AccountRepository;
 import am.neovision.domain.repository.BankAccountRepository;
 import am.neovision.dto.BankAccountAdd;
 import am.neovision.dto.BankAccountDto;
-import am.neovision.dto.TransactionDto;
 import am.neovision.exceptions.NotFoundException;
 import am.neovision.service.AbstractService;
 import am.neovision.service.BankAccountService;

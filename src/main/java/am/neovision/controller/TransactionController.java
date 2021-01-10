@@ -1,10 +1,16 @@
 package am.neovision.controller;
 
-import am.neovision.dto.*;
+import am.neovision.dto.DataTable;
+import am.neovision.dto.DatatableRequest;
+import am.neovision.dto.SectionInfo;
+import am.neovision.dto.transaction.Processing;
+import am.neovision.dto.transaction.TransactionAdd;
+import am.neovision.dto.transaction.TransactionDto;
+import am.neovision.dto.transaction.TransactionStatus;
+import am.neovision.exceptions.NotFoundException;
 import am.neovision.payload.ApiResponse;
 import am.neovision.service.TransactionService;
 import am.neovision.service.impl.AccountService;
-import am.neovision.validator.BankAccountValidator;
 import am.neovision.validator.TransactionValidator;
 import groovy.util.logging.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -79,7 +86,7 @@ public class TransactionController extends AbstractController {
                     HttpStatus.BAD_REQUEST);
         } else {
             transactionService.add(transaction);
-            return new ResponseEntity(new ApiResponse(true, "Success", "Transaction added successfully", HttpStatus.OK.value(), null ), HttpStatus.OK);
+            return new ResponseEntity(new ApiResponse(true, "Success", "Transaction added successfully", HttpStatus.OK.value(), null), HttpStatus.OK);
         }
     }
 
@@ -174,9 +181,25 @@ public class TransactionController extends AbstractController {
         }
     }
 
+    @RequestMapping(value = "/processing", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> processing(@Valid @RequestBody Processing processing) {
+        try {
+            return ResponseEntity.ok().body(new ApiResponse(true, "Success",
+                    "Transaction processed successfully", HttpStatus.OK.value(),
+                    transactionService.processing(processing)));
+        } catch (NotFoundException e) {
+            throw new NotFoundException("Transaction not found", e);
+        }
+    }
+
     @RequestMapping(value = "/cancel", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> cancel(@RequestParam String uuid) {
-        transactionService.delete(uuid);
-        return new ResponseEntity(new ApiResponse(true, "Success", "Transaction canceled successfully", HttpStatus.OK.value(), null ), HttpStatus.OK);
+    public ResponseEntity<?> cancel(@Valid @RequestBody Processing processing) {
+        try {
+            return ResponseEntity.ok().body(new ApiResponse(true, "Success",
+                    "Transaction canceled successfully", HttpStatus.OK.value(),
+                    transactionService.cancel(processing.getUuid())));
+        } catch (NotFoundException e) {
+            throw new NotFoundException("Transaction not found", e);
+        }
     }
 }

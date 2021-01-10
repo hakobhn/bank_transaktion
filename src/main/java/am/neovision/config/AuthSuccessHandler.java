@@ -39,8 +39,7 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication)
-            throws IOException {
+                                        Authentication authentication) throws IOException {
 
         loginAttemptService.loginSucceeded(RequestUtils.getClientIP(request));
 

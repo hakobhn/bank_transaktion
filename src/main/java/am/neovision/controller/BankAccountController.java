@@ -89,13 +89,13 @@ public class BankAccountController {
                     HttpStatus.BAD_REQUEST);
         } else {
             bankAccountService.add(bankAccount);
-            return new ResponseEntity(new ApiResponse(true, "Success", "Bank account added successfully", HttpStatus.OK.value(), null ), HttpStatus.OK);
+            return new ResponseEntity(new ApiResponse(true, "Success", "Bank account added successfully", HttpStatus.OK.value(), null), HttpStatus.OK);
         }
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> delete(@RequestParam String uuid) {
         bankAccountService.delete(uuid);
-        return new ResponseEntity(new ApiResponse(true, "Success", "Bank account deleted successfully", HttpStatus.OK.value(), null ), HttpStatus.OK);
+        return new ResponseEntity(new ApiResponse(true, "Success", "Bank account deleted successfully", HttpStatus.OK.value(), null), HttpStatus.OK);
     }
 }

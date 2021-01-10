@@ -1,6 +1,7 @@
 package am.neovision.config;
 
 import am.neovision.exceptions.NotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,7 @@ import static org.springframework.http.HttpStatus.Series.SERVER_ERROR;
 /**
  * @author hakob.hakobyan created on 12/28/2020
  */
+@Slf4j
 @Component
 public class RestTemplateResponseErrorHandler
         implements ResponseErrorHandler {
@@ -21,7 +23,6 @@ public class RestTemplateResponseErrorHandler
     @Override
     public boolean hasError(ClientHttpResponse httpResponse)
             throws IOException {
-
         return (
                 httpResponse.getStatusCode().series() == CLIENT_ERROR
                         || httpResponse.getStatusCode().series() == SERVER_ERROR);
@@ -34,12 +35,11 @@ public class RestTemplateResponseErrorHandler
         if (httpResponse.getStatusCode()
                 .series() == HttpStatus.Series.SERVER_ERROR) {
             // handle SERVER_ERROR
+            log.error("Rest error: {}", httpResponse.getStatusText());
         } else if (httpResponse.getStatusCode()
-                .series() == HttpStatus.Series.CLIENT_ERROR) {
-            // handle CLIENT_ERROR
-            if (httpResponse.getStatusCode() == HttpStatus.NOT_FOUND) {
+                .series() == HttpStatus.Series.CLIENT_ERROR &&
+                httpResponse.getStatusCode() == HttpStatus.NOT_FOUND) {
                 throw new NotFoundException("Remote server 404.");
-            }
         }
     }
 }

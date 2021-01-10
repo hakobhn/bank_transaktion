@@ -1,4 +1,4 @@
-# Neovision admin toolkit application
+# Neovision bank admin toolkit application
 
 This is Bank transaction control admin toolkit web application for processing backend management. Frameworks and tools used: [Spring Boot, Security, MongoDB]. [Github](https://hakobhn@bitbucket.org/.git)
 

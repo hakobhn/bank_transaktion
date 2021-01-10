@@ -2,15 +2,19 @@ package am.neovision.service.impl;
 
 import am.neovision.converter.TransactionToDtoConverter;
 import am.neovision.domain.AbstractRepository;
+import am.neovision.domain.model.BankAccount;
 import am.neovision.domain.model.Transaction;
 import am.neovision.domain.repository.BankAccountRepository;
 import am.neovision.domain.repository.TransactionRepository;
-import am.neovision.dto.StatusEnum;
-import am.neovision.dto.TransactionAdd;
-import am.neovision.dto.TransactionDto;
-import am.neovision.dto.TransactionStatus;
+import am.neovision.dto.Currency;
+import am.neovision.dto.transaction.Processing;
+import am.neovision.dto.transaction.TransactionAdd;
+import am.neovision.dto.transaction.TransactionDto;
+import am.neovision.dto.transaction.TransactionStatus;
 import am.neovision.exceptions.NotFoundException;
+import am.neovision.exceptions.PermissionDenied;
 import am.neovision.service.AbstractService;
+import am.neovision.service.ExchangeRatesService;
 import am.neovision.service.TransactionService;
 import am.neovision.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +23,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -30,10 +35,16 @@ import java.util.Optional;
 public class TransactionServiceImpl extends AbstractService<Transaction, TransactionDto> implements TransactionService {
 
     @Autowired
+    private AccountService accountService;
+
+    @Autowired
     private BankAccountRepository bankAccountRepository;
 
     @Autowired
     private TransactionRepository transactionRepository;
+
+    @Autowired
+    private ExchangeRatesService exchangeRatesService;
 
     @Autowired
     private TransactionToDtoConverter transactionToDtoConverter;
@@ -62,7 +73,12 @@ public class TransactionServiceImpl extends AbstractService<Transaction, Transac
         transaction.setType(transactionAdd.getType());
         transaction.setSerialNumber(StringUtil.generateRandomString(16));
         transaction.setStatus(TransactionStatus.PENDING);
-        transaction.setAmount(Float.parseFloat(transactionAdd.getAmount().replaceAll("[^a-zA-Z0-9\\s.]", "")));
+        Float fromAmount = Float.parseFloat(transactionAdd.getAmount().replaceAll("[^a-zA-Z0-9\\s.]", ""));
+        Currency fromCurrency = transaction.getFromAccount().getCurrency();
+        Currency toCurrency = transaction.getToAccount().getCurrency();
+        Float toAmount = exchangeRatesService.calculateExchangeAmount(fromAmount, fromCurrency, toCurrency);
+        transaction.setFromAmount(fromAmount);
+        transaction.setToAmount(toAmount);
         return save(transaction);
     }
 
@@ -73,14 +89,37 @@ public class TransactionServiceImpl extends AbstractService<Transaction, Transac
         update(transaction);
     }
 
+    @Override
+    @Transactional(readOnly = false)
+    public TransactionDto processing(Processing processing) {
+        Transaction transaction = transactionRepository.findByUuid(processing.getUuid()).orElseThrow(NotFoundException::new);
+        TransactionStatus status = Optional.ofNullable(TransactionStatus.valueOf(processing.getStatus())).orElseThrow(NotFoundException::new);
+        transaction.setStatus(status);
+        BankAccount fromAccount = transaction.getFromAccount();
+        BankAccount toAccount = transaction.getToAccount();
+        if (status == TransactionStatus.ACCEPTED) {
+            fromAccount.setAmount(fromAccount.getAmount() - transaction.getFromAmount());
+            toAccount.setAmount(toAccount.getAmount() + transaction.getToAmount());
+        }
+        return save(transaction);
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public TransactionDto cancel(String uuid) {
+        Transaction transaction = transactionRepository.findByUuid(uuid).orElseThrow(NotFoundException::new);
+        if (!transaction.getFromAccount().getOwner().getUuid().equals(accountService.getCurrentAccount().getUuid())) {
+            throw new PermissionDenied("Not your transaction");
+        }
+        transaction.setStatus(TransactionStatus.CANCELED);
+        BankAccount fromAccount = transaction.getFromAccount();
+        fromAccount.setAmount(fromAccount.getAmount() + transaction.getFromAmount());
+        return save(transaction);
+    }
+
     public void delete(String uuid) {
         Transaction transaction = transactionRepository.findByUuid(uuid).orElseThrow(NotFoundException::new);
         delete(transaction.getId());
-    }
-
-    public void cancel(String uuid) {
-        Transaction transaction = transactionRepository.findByUuid(uuid).orElseThrow(NotFoundException::new);
-        transaction.setStatus(TransactionStatus.CANCELED);
     }
 
     @Override

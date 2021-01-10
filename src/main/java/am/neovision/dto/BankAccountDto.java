@@ -8,5 +8,6 @@ import lombok.EqualsAndHashCode;
 public class BankAccountDto extends AbstractDto {
     private String number;
     private Float amount;
+    private Float availableAmount;
     private Currency currency;
 }

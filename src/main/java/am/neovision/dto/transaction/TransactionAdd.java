@@ -1,5 +1,6 @@
-package am.neovision.dto;
+package am.neovision.dto.transaction;
 
+import am.neovision.dto.AbstractDto;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;

@@ -77,4 +77,4 @@ rest:
 
 # Notification service
 exchange-service:
-  url: https://api.exchangeratesapi.io/latest?base=USD
+  url: https://api.exchangeratesapi.io/latest?base=%s&symbols=%s

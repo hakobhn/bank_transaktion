@@ -1,8 +1,9 @@
 package am.neovision.service;
 
 
-import am.neovision.dto.TransactionAdd;
-import am.neovision.dto.TransactionDto;
+import am.neovision.dto.transaction.Processing;
+import am.neovision.dto.transaction.TransactionAdd;
+import am.neovision.dto.transaction.TransactionDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -16,9 +17,11 @@ public interface TransactionService {
 
     void update(TransactionDto transaction);
 
-    void delete(String uuid);
+    TransactionDto processing(Processing processing);
 
-    void cancel(String uuid);
+    TransactionDto cancel(String uuid);
+
+    void delete(String uuid);
 
     Page<TransactionDto> list(String search, Pageable pageable);
 

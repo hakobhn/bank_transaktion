@@ -50,13 +50,23 @@ function initTransactions() {
                 }
             },
             {
-                "data": "amount",
-                "name": "amount",
-                "title": "Amount",
+                "data": "fromAmount",
+                "name": "fromAmount",
+                "title": "From amount",
                 "orderable": true,
                 "searchable": false,
                 "render": function (data, type, row) {
-                    return data;
+                    return data + '<span>'+row['from']['currency']+'</span';
+                }
+            },
+            {
+                "data": "toAmount",
+                "name": "toAmount",
+                "title": "To amount",
+                "orderable": true,
+                "searchable": false,
+                "render": function (data, type, row) {
+                    return data + '<span>'+row['to']['currency']+'</span';
                 }
             },
             {
@@ -171,13 +181,23 @@ function initOwnerTransactions() {
                 }
             },
             {
-                "data": "amount",
-                "name": "amount",
-                "title": "Amount",
+                "data": "fromAmount",
+                "name": "fromAmount",
+                "title": "From amount",
                 "orderable": true,
                 "searchable": false,
                 "render": function (data, type, row) {
-                    return data;
+                    return data + '<span>'+row['from']['currency']+'</span';
+                }
+            },
+            {
+                "data": "toAmount",
+                "name": "toAmount",
+                "title": "To amount",
+                "orderable": true,
+                "searchable": false,
+                "render": function (data, type, row) {
+                    return data + '<span>'+row['to']['currency']+'</span';
                 }
             },
             {
@@ -211,16 +231,6 @@ function initOwnerTransactions() {
                 }
             },
             {
-                "data": "createdDate",
-                "name": "createdDate",
-                "title": "CreatedAt",
-                "orderable": true,
-                "searchable": false,
-                "render": function (data, type, row) {
-                    return moment(data).format("DD/MM/YYYY");
-                }
-            },
-            {
                 "data": "uuid",
                 "name": "",
                 "title": "",
@@ -233,7 +243,7 @@ function initOwnerTransactions() {
                         result = '<div class="container">\n' +
                             '       <div class="row">' +
                             '             <div class="col-12">' +
-                            '                 <a alt="Delete" class="btn btn-danger btn-sm" href="#" onclick="cancelTransaction(\'' + data + '\')">' +
+                            '                 <a href="javascript:void(0);" data-uuid="'+row["uuid"]+'" class="cancel_transaction btn btn-danger btn-sm" >' +
                             '                     <i class="fas fa-trash">Cancel</i>' +
                             '                 </a>\n';
                         '             </div>' +
@@ -292,13 +302,23 @@ function initOwnerTransactions() {
                 }
             },
             {
-                "data": "amount",
-                "name": "amount",
-                "title": "Amount",
+                "data": "fromAmount",
+                "name": "fromAmount",
+                "title": "From amount",
                 "orderable": true,
                 "searchable": false,
                 "render": function (data, type, row) {
-                    return data;
+                        return data + '<span>'+row['from']['currency']+'</span';
+                }
+            },
+            {
+                "data": "toAmount",
+                "name": "toAmount",
+                "title": "To amount",
+                "orderable": true,
+                "searchable": false,
+                "render": function (data, type, row) {
+                    return data + '<span>'+row['to']['currency']+'</span';
                 }
             },
             {
@@ -332,16 +352,6 @@ function initOwnerTransactions() {
                 }
             },
             {
-                "data": "createdDate",
-                "name": "createdDate",
-                "title": "CreatedAt",
-                "orderable": true,
-                "searchable": false,
-                "render": function (data, type, row) {
-                    return moment(data).format("DD/MM/YYYY");
-                }
-            },
-            {
                 "data": "uuid",
                 "name": "",
                 "title": "",
@@ -354,7 +364,7 @@ function initOwnerTransactions() {
                         result = '<div class="container">\n' +
                             '       <div class="row">' +
                             '             <div class="col-12">' +
-                            '                 <a alt="Delete" class="btn btn-danger btn-sm" href="#" onclick="cancelTransaction(\'' + data + '\')">' +
+                            '                 <a href="javascript:void(0);" data-uuid="'+row["uuid"]+'" class="cancel_transaction btn btn-danger btn-sm" >' +
                             '                     <i class="fas fa-trash">Cancel</i>' +
                             '                 </a>\n';
                         '             </div>' +
@@ -416,13 +426,23 @@ function initBankAccountTransactions(bankAccountUuid) {
                 }
             },
             {
-                "data": "amount",
-                "name": "amount",
-                "title": "Amount",
+                "data": "fromAmount",
+                "name": "fromAmount",
+                "title": "From amount",
                 "orderable": true,
                 "searchable": false,
                 "render": function (data, type, row) {
-                    return data;
+                    return data + '<span>'+row['from']['currency']+'</span';
+                }
+            },
+            {
+                "data": "toAmount",
+                "name": "toAmount",
+                "title": "To amount",
+                "orderable": true,
+                "searchable": false,
+                "render": function (data, type, row) {
+                    return data + '<span>'+row['to']['currency']+'</span';
                 }
             },
             {
@@ -456,16 +476,6 @@ function initBankAccountTransactions(bankAccountUuid) {
                 }
             },
             {
-                "data": "createdDate",
-                "name": "createdDate",
-                "title": "CreatedAt",
-                "orderable": true,
-                "searchable": false,
-                "render": function (data, type, row) {
-                    return moment(data).format("DD/MM/YYYY");
-                }
-            },
-            {
                 "data": "uuid",
                 "name": "",
                 "title": "",
@@ -478,7 +488,7 @@ function initBankAccountTransactions(bankAccountUuid) {
                         result = '<div class="container">\n' +
                             '       <div class="row">' +
                             '             <div class="col-12">' +
-                            '                 <a alt="Delete" class="btn btn-danger btn-sm" href="#" onclick="cancelTransaction(\'' + data + '\')">' +
+                            '                 <a href="javascript:void(0);" data-uuid="'+row["uuid"]+'" class="cancel_transaction btn btn-danger btn-sm" >' +
                             '                     <i class="fas fa-trash">Cancel</i>' +
                             '                 </a>\n';
                         '             </div>' +
@@ -490,30 +500,122 @@ function initBankAccountTransactions(bankAccountUuid) {
             },
         ]
     });
-    $('#datatable_bank_account_transactions').append('<button class="btn-default ml-2" onclick="bankAccountTransactionsDatatable.ajax.reload(null, false);">Refresh</button>')
+    $('#datatable_bank_account_transactions_filter').append('<button class="btn-default ml-2" onclick="bankAccountTransactionsDatatable.ajax.reload(null, false);">Refresh</button>')
+}
+
+$(document).on("click", ".cancel_transaction", function(e) {
+    let transactionUuid = $(this).attr("data-uuid");
+    cancelTransaction(transactionUuid);
+});
+
+function cancelTransaction(transactionUuid) {
+    console.log("Cancel transaction uuid: " + transactionUuid);
+    $('#cancel_confirmation_uuid').val(transactionUuid);
+    $("#cancel_confirmation .close").on("click", function(e) {
+        $("#cancel_confirmation").modal('hide');
+        $('#cancel_confirmation_uuid').val('');
+    });
+    $('#cancel_confirmation').modal('show');
 }
 
 $(document).on("click", "#cancel_confirmation .confirm", function(e) {
-    let accountId = $('#cancel_confirmation_id').val();
+    let transactionUuid = $('#cancel_confirmation_uuid').val();
+    console.log("Cancel transaction uuid: " + transactionUuid);
+    let processJson = JSON.stringify({'uuid':transactionUuid, 'status':'CANCELED'});
+
+    console.log(processJson);
+
     $.ajax({
-        url: "/transactions/cancel?id="+transactionId,
+        url: "/transactions/cancel",
         type: "DELETE",
+        data: processJson,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
         success: function (data) {
-            accountsDatatable.ajax.reload(null, false);
+            fromTransactionsDatatable.ajax.reload(null, false);
+            toTransactionsDatatable.ajax.reload(null, false);
             $("#cancel_confirmation").modal('hide');
-            $('#cancel_confirmation_id').val('');
+            $('#cancel_confirmation_uuid').val('');
         },
         error: function (xhr, status, err) {
-            showError('Delete account failed.', "Error received", JSON.parse(xhr.responseText).message);
+            alertError(xhr);
         }
     });
 });
 
-function cancelTransaction(transactionId) {
-    console.log("Cancel transaction id: " + transactionId);
-    $('#delete_account_id').val(transactionId);
-    $("#cancel_confirmation .close").on("click", function(e) {
-        $("#cancel_confirmation").modal('hide');
+
+
+$(document).on("click", ".accept_transaction", function(e) {
+    let transactionUuid = $(this).attr("data-uuid");
+    acceptTransaction(transactionUuid);
+});
+
+function acceptTransaction(transactionUuid) {
+    console.log("Accept transaction uuid: " + transactionUuid);
+    $('#accept_transaction_confirmation_id').val(transactionUuid);
+    $("#accept_transaction_confirmation .close").on("click", function(e) {
+        $("#accept_transaction_confirmation").modal('hide');
+        $('#accept_transaction_confirmation_id').val('');
     });
-    $('#cancel_confirmation').modal('show');
+    $('#accept_transaction_confirmation').modal('show');
 }
+
+$(document).on("click", "#accept_transaction_confirmation .confirm", function(e) {
+    let transactionUuid = $('#accept_transaction_confirmation_id').val();
+    let processJson = JSON.stringify({'uuid':transactionUuid, 'status':'ACCEPTED'});
+
+    $.ajax({
+        url: "/transactions/processing",
+        type: "PUT",
+        data: processJson,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            // console.log(JSON.stringify(data));
+            transactionsDatatable.ajax.reload(null, false);
+            $("#accept_transaction_confirmation").modal('hide');
+            $('#accept_transaction_confirmation_id').val('');
+        },
+        error: function (xhr, status, err) {
+            alertError(xhr);
+        }
+    });
+});
+
+$(document).on("click", ".reject_transaction", function(e) {
+    let transactionUuid = $(this).attr("data-uuid");
+    rejectTransaction(transactionUuid);
+});
+
+function rejectTransaction(transactionUuid) {
+    console.log("Reject transaction uuid: " + transactionUuid);
+    $('#reject_transaction_confirmation_id').val(transactionUuid);
+    $("#reject_transaction_confirmation .close").on("click", function(e) {
+        $("#reject_transaction_confirmation").modal('hide');
+        $('#reject_transaction_confirmation_id').val('');
+    });
+    $('#reject_transaction_confirmation').modal('show');
+}
+
+$(document).on("click", "#reject_transaction_confirmation .confirm", function(e) {
+    let transactionUuid = $('#reject_transaction_confirmation_id').val();
+    console.log("Reject uuid: " + transactionUuid);
+    let processJson = JSON.stringify({'uuid':transactionUuid, 'status':'REJECTED'});
+
+    $.ajax({
+        url: "/transactions/processing",
+        type: "PUT",
+        data: processJson,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            console.log(JSON.stringify(data));
+            transactionsDatatable.ajax.reload(null, false);
+            $("#reject_transaction_confirmation").modal('hide');
+            $('#reject_transaction_confirmation_id').val('');
+        },
+        error: function (xhr, status, err) {
+            alertError(xhr);
+        }
+    });
+});

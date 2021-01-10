@@ -29,8 +29,6 @@ public class RestTemplateConfig {
                 .errorHandler(new RestTemplateResponseErrorHandler())
                 .build();
 
-//        restTemplate.setInterceptors(Collections.singletonList(loggingInterceptor));
-
         return restTemplate;
     }
 

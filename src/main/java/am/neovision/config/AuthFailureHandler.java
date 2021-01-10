@@ -29,7 +29,6 @@ public class AuthFailureHandler implements AuthenticationFailureHandler {
             AuthenticationException exception) throws IOException {
 
         loginAttemptService.loginFailed(RequestUtils.getClientIP(request));
-//        log.warn("Failed to logging in with email: {}", exception.getLocalizedMessage());
 
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.sendRedirect("/login?error=" + exception.getLocalizedMessage());

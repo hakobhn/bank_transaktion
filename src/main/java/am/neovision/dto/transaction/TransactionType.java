@@ -1,4 +1,4 @@
-package am.neovision.dto;
+package am.neovision.dto.transaction;
 
 public enum TransactionType {
     DEPOSIT,

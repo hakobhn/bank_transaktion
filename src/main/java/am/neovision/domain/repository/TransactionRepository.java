@@ -12,18 +12,22 @@ public interface TransactionRepository extends AbstractRepository<Transaction, L
 
     Optional<Transaction> findByUuid(String uuid);
 
-    @Query("select t from Transaction t where t.serialNumber like %?1 ")
+    @Query("select t from Transaction t where t.fromAccount.number like %?1 or t.toAccount.number like %?1 or t.serialNumber like %?1 ")
     Page<Transaction> findBySearch(String search, Pageable pageable);
 
-    @Query("select t from Transaction t where (t.fromAccount.uuid = ?1 or t.toAccount.uuid = ?1) and t.serialNumber like %?1 ")
+    @Query("select t from Transaction t where (t.fromAccount.uuid = ?1 or t.toAccount.uuid = ?1) " +
+            "and (t.fromAccount.number like %?2 or t.toAccount.number like %?2 or t.serialNumber like %?2) ")
     Page<Transaction> findByOwnerSearch(String ownerUuid, String search, Pageable pageable);
 
-    @Query("select t from Transaction t where t.fromAccount.uuid = ?1 and t.serialNumber like %?2 ")
+    @Query("select t from Transaction t where t.fromAccount.uuid = ?1 " +
+            "and (t.fromAccount.number like %?2 or t.toAccount.number like %?2 or t.serialNumber like %?2) ")
     Page<Transaction> findByFrom(String fromUuid, String search, Pageable pageable);
 
-    @Query("select t from Transaction t where t.toAccount.uuid = ?1 and t.serialNumber like %?2 ")
+    @Query("select t from Transaction t where t.toAccount.uuid = ?1 " +
+            "and (t.fromAccount.number like %?2 or t.toAccount.number like %?2 or t.serialNumber like %?2) ")
     Page<Transaction> findByTo(String fromUuid, String search, Pageable pageable);
 
-    @Query("select t from Transaction t where (t.toAccount.uuid = ?1 or t.fromAccount.uuid = ?1) and t.serialNumber like %?2 ")
+    @Query("select t from Transaction t where (t.toAccount.uuid = ?1 or t.fromAccount.uuid = ?1) " +
+            "and (t.fromAccount.number like %?2 or t.toAccount.number like %?2 or t.serialNumber like %?2) ")
     Page<Transaction> findByBankAccount(String fromUuid, String search, Pageable pageable);
 }

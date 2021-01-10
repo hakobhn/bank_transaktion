@@ -1,6 +1,7 @@
 package am.neovision.validator;
 
-import am.neovision.dto.TransactionAdd;
+import am.neovision.dto.BankAccountDto;
+import am.neovision.dto.transaction.TransactionAdd;
 import am.neovision.service.BankAccountService;
 import am.neovision.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class TransactionValidator implements Validator {
     public void validate(Object target, Errors errors) {
         TransactionAdd transactionAdd = (TransactionAdd) target;
 
-        bankAccountService.findByNumber(transactionAdd.getFromNumber())
+        BankAccountDto fromAccount = bankAccountService.findByNumber(transactionAdd.getFromNumber())
                 .orElseGet(() -> {
                     errors.rejectValue("fromNumber", "bank.number.not.found", "Provided number is incorrect");
                     return null;
@@ -45,8 +46,11 @@ public class TransactionValidator implements Validator {
 
         try {
             Float amount = Float.parseFloat(transactionAdd.getAmount().replaceAll("[^a-zA-Z0-9\\s.]", ""));
-            if (amount < 0f) {
+            if (amount <= 0f) {
                 errors.rejectValue("amount", "amount.empty", "Amount not set");
+            }
+            if (amount > fromAccount.getAvailableAmount()) {
+                errors.rejectValue("amount", "insufficient.funds", "Insufficient funds");
             }
         } catch (Exception e) {
             errors.rejectValue("amount", "amount.incorrect", "Amount not correct");

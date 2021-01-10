@@ -97,7 +97,7 @@ public class AccountService extends AbstractService<Account, AccountDto> impleme
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) {
         UserDetails principal = accountRepository.findByEmail(email)
                 .map(
                         account -> buildUserForAuthentication(account.getEmail(), account.getPassword(),

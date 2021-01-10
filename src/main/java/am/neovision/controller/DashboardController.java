@@ -49,4 +49,11 @@ public class DashboardController extends AbstractController {
         }
         return "dashboard/" + dashboard;
     }
+
+    @GetMapping("/instruction")
+    public String add(Model model) {
+        section.setDescription("Instructions");
+
+        return "dashboard/instruction";
+    }
 }

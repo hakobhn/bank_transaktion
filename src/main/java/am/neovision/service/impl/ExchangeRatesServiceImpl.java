@@ -30,19 +30,36 @@ public class ExchangeRatesServiceImpl implements ExchangeRatesService {
     private String url;
 
     /**
-     * Retrieve exchage rate for given currency.
+     * Retrieve exchange rate for given currency.
      *
-     * @param currency The object to send... we'll flatten it to request param.
-     *
-     * @return Currency rate value for given currency vs USD.
+     * @param fromCurrency The base currency object to send... we'll flatten it to request param.
+     * @param toCurrency   The symbols currency object to send... we'll flatten it to request param.
+     * @return Currency rate value for given currency vs result currency.
      */
-    public Float getCurrencyRate(Currency currency) {
+    public Float getExchangeRate(Currency fromCurrency, Currency toCurrency) {
         try {
-            ResponseEntity<ExchangeRate> response = restTemplate.postForEntity(url, currency.getDisplayValue(), ExchangeRate.class);
-            return response.getBody().getRates().get(currency);
+            if (fromCurrency.equals(toCurrency)) {
+                return 1f;
+            }
+            ResponseEntity<ExchangeRate> response = restTemplate.getForEntity(
+                    String.format(url, fromCurrency.getDisplayValue(), toCurrency.getDisplayValue()),
+                    ExchangeRate.class);
+            return response.getBody().getRates().get(toCurrency);
         } catch (Exception e) {
-            log.error("Notification service is down. Error: {}.", e.getLocalizedMessage());
+            log.error("Exchange service is down. Error: {}.", e.getLocalizedMessage());
             throw new RemoteServiceException("Unable retrieve data from exchange service.", e);
         }
+    }
+
+    /**
+     * Calculates amount for given currency and amount.
+     *
+     * @param amount       The amount that needs to be converted.
+     * @param fromCurrency The currency of amount.
+     * @param toCurrency   The currency in which needs to be converted the amount.
+     * @return Converted amount.
+     */
+    public Float calculateExchangeAmount(Float amount, Currency fromCurrency, Currency toCurrency) {
+        return amount * getExchangeRate(fromCurrency, toCurrency);
     }
 }

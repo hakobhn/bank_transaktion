@@ -6,10 +6,11 @@
 package am.neovision.domain.model;
 
 import am.neovision.domain.AbstractModel;
-import am.neovision.dto.TransactionStatus;
-import am.neovision.dto.TransactionType;
+import am.neovision.dto.transaction.TransactionStatus;
+import am.neovision.dto.transaction.TransactionType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -33,7 +34,10 @@ public class Transaction extends AbstractModel<Long> {
     private String serialNumber;
 
     @Column(columnDefinition = "DECIMAL(10,2)")
-    private Float amount;
+    private Float fromAmount;
+
+    @Column(columnDefinition = "DECIMAL(10,2)")
+    private Float toAmount;
 
     @NotNull
     @Column(columnDefinition = "enum('DEPOSIT', 'WITHDRAWAL', 'TRANSFER')")
@@ -45,10 +49,14 @@ public class Transaction extends AbstractModel<Long> {
     @Enumerated(EnumType.STRING)
     private TransactionStatus status;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FROM_BANK_ACCOUNT_ID", nullable = false)
     private BankAccount fromAccount;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TO_BANK_ACCOUNT_ID", nullable = false)
     private BankAccount toAccount;

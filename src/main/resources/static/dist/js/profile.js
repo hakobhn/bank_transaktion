@@ -43,7 +43,7 @@ function initBankAccounts(ownerUuid) {
                     let result = '<div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">\n' +
                         '                                        <div class="card bg-light w-100">\n' +
                         '                                            <div class="card-header text-muted border-bottom-0">\n' +
-                        '                                                <h3 class="card-title font-weight-bold">'+row["number"]+'</h3>\n';
+                        '                                                <h3 class="card-title font-weight-bold"><i class="fas fa-key"></i> '+row["number"]+'</h3>\n';
                     if (isAdmin) {
                         result += '<div class="card-tools">\n' +
                             '                  <button type="button" class="btn btn-sm btn-danger mt-0" title="Remove bank account" onclick="deleteBankAccount(\''+row["uuid"]+'\')">' +
@@ -51,13 +51,14 @@ function initBankAccounts(ownerUuid) {
                             '                  </button>\n' +
                             '                </div>';
                     }
-                    result +='                                            </div>\n'+
+                    result +='                                       </div>\n'+
                         '                                            <div class="card-body pt-0">\n' +
                         '                                                <div class="row">\n' +
                         '                                                    <!-- Heading -->\n' +
                         '                                                    <div class="item-heading clearfix">\n' +
                         '                                                        <!-- Heading -->\n' +
                         '                                                        <h3>Amount: '+row['amount']+'</h3>\n' +
+                        '                                                        <h3>Available: '+row['availableAmount']+'</h3>\n' +
                         '                                                        <h3>'+row['currency']+'</h3>\n' +
                         '                                                    </div>\n' +
                         '                                                </div>\n' +
@@ -220,6 +221,8 @@ $(document).on("click", "#make_transaction-modal .confirm", function(e) {
         success: function (data) {
             $("#make_transaction-modal").modal('hide');
             $('#make_transaction-form').trigger("reset");
+
+            bankAccountsDatatable.ajax.reload(null, false);
         },
         error: function (xhr, status, err) {
             alertError(xhr);

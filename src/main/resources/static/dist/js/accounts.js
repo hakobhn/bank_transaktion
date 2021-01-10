@@ -102,8 +102,9 @@ function initAccounts() {
 
 $(document).on("click", "#delete_confirmation .confirm", function(e) {
     let accountId = $('#delete_account_id').val();
+    console.log("Delete accountId: " + accountId);
     $.ajax({
-        url: "/accounts/delete?id="+accountId,
+        url: "/accounts/delete?uuid="+accountId,
         type: "DELETE",
         success: function (data) {
             accountsDatatable.ajax.reload(null, false);
@@ -111,7 +112,7 @@ $(document).on("click", "#delete_confirmation .confirm", function(e) {
             $('#delete_account_id').val('');
         },
         error: function (xhr, status, err) {
-            showError('Delete account failed.', "Error received", JSON.parse(xhr.responseText).message);
+            alertError(xhr);
         }
     });
 });

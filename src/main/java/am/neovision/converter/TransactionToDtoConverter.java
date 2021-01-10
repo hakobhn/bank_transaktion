@@ -1,7 +1,7 @@
 package am.neovision.converter;
 
 import am.neovision.domain.model.Transaction;
-import am.neovision.dto.TransactionDto;
+import am.neovision.dto.transaction.TransactionDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;

@@ -9,10 +9,12 @@ import am.neovision.domain.AbstractModel;
 import am.neovision.dto.Currency;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -36,17 +38,19 @@ public class BankAccount extends AbstractModel<Long> {
     private Float amount;
 
     @NotNull
-    @Column(columnDefinition = "enum('EUR','USD', 'GPB')")
+    @Column(columnDefinition = "enum('EUR','USD', 'GBP')")
     @Enumerated(EnumType.STRING)
     private Currency currency;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ACCOUNT_ID", nullable = false)
     private Account owner;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "fromAccount", cascade = {CascadeType.ALL})
-    private Set<Transaction> output;
+    private Set<Transaction> output = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "toAccount", cascade = {CascadeType.ALL})
-    private Set<Transaction> input;
+    private Set<Transaction> input = new HashSet<>();
 }

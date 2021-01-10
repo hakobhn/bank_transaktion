@@ -1,0 +1,45 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout">
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+<div class="content" layout:fragment="content">
+    <!-- daterange picker -->
+    <link rel="stylesheet" th:href="@{/dist/css/highlighter.css}">
+    <div class="container-fluid">
+        <div class="px-4 py-2" style="min-height: 335px;">
+            <div class="content-header">
+                <h1 class="text-dark">Introduction</h1>
+            </div>
+
+            <div class="content px-2">
+                <p><strong>BankAdmin</strong> can be installed using GitHub. Please be sure to check the dependencies section before continuing.</p>
+
+                <h4>Download</h4>
+
+                <h6><strong>From Github</strong></h6>
+                <p>Visit the releases section on Github and download the <a
+                        href="https://github.com/hakobhn/bank_transaktion.git">latest release</a>.</p>
+
+                <h4>Command Line</h4>
+
+                <h6><strong>Via Git</strong></h6>
+                <div class="language-bash highlighter-rouge">
+                    <div class="highlight">
+                        <pre class="highlight"><code>git clone https://github.com/hakobhn/bank_transaktion.git</code></pre>
+                    </div>
+                </div>
+
+                <hr />
+
+                <p><strong>BankAdmin</strong> technical documentation can be downloaded by this link <a href="#">TechDocumentation.docx</a>.</p>
+
+            </div>
+        </div>
+
+    </div>
+    <!-- /.container-fluid -->
+</div>
+</body>
+</html>

@@ -1,6 +1,8 @@
 package am.neovision.controller;
 
 import am.neovision.dto.*;
+import am.neovision.dto.transaction.TransactionAdd;
+import am.neovision.dto.transaction.TransactionType;
 import am.neovision.exceptions.PermissionDenied;
 import am.neovision.payload.ApiResponse;
 import am.neovision.service.impl.AccountService;
@@ -87,7 +89,7 @@ public class AccountController extends AbstractController {
 
         AccountDto accountInfo = accountService.findByUUID(uuid);
 
-        model.addAttribute("action", "Edit " + accountInfo.getFirstName()+" "+accountInfo.getLastName()+"'s account");
+        model.addAttribute("action", "Edit " + accountInfo.getFirstName() + " " + accountInfo.getLastName() + "'s account");
         model.addAttribute("currencies", Currency.values());
 
         if (accountInfo.getAvatar().contains("/dist/img/avatar")) {
@@ -126,7 +128,7 @@ public class AccountController extends AbstractController {
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> delete(@RequestParam String uuid) {
         accountService.delete(uuid);
-        return new ResponseEntity(new ApiResponse(true, "Success", "Account deleted successfully", HttpStatus.OK.value(), null ), HttpStatus.OK);
+        return new ResponseEntity(new ApiResponse(true, "Success", "Account deleted successfully", HttpStatus.OK.value(), null), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/profile/{uuid}", method = RequestMethod.GET)

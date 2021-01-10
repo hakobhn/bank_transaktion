@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @EnableWebMvc
 @Configuration
-@ComponentScan("am.neovision.admin.toolkit")
+@ComponentScan("am.neovision")
 @EnableJpaRepositories(basePackages = "am.neovision.domain.repository")
 public class MvcConfig implements WebMvcConfigurer {
 
@@ -23,14 +23,6 @@ public class MvcConfig implements WebMvcConfigurer {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         return bCryptPasswordEncoder;
     }
-
-//    @Override
-//    public void addViewControllers(ViewControllerRegistry registry) {
-//        registry.addViewController("/").setViewName("login");
-//        registry.addViewController("/login").setViewName("login");
-//        registry.addViewController("/dashboard").setViewName("dashboard");
-//        registry.addViewController("/signup").setViewName("signup");
-//    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
