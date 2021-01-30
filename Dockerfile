@@ -4,7 +4,8 @@ COPY settings.gradle /build/
 COPY gradle /build/gradle/
 COPY src /build/src/
 WORKDIR /build/
-RUN gradle build --info
+RUN gradle build -x test
+
 
 FROM openjdk:14-jdk-alpine AS prod-stage
 WORKDIR /app

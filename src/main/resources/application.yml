@@ -2,12 +2,14 @@ spring:
   jpa:
     generate-ddl: true
     show-sql: true
+    database: mysql
     ## Hibernate Properties
     hibernate:
       # Hibernate ddl auto (create, create-drop, validate, update)
       ddl-auto: update
       # The SQL dialect makes Hibernate generate better SQL for the chosen database
       dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+
   ## Spring DATA SOURCE Configurations
 #  datasource:
 ##    platform: mysql

@@ -1,42 +1,43 @@
-version: "3"
+version: '3.6'
 
 services:
-  service:
+  app:
     build:
       context: .
       dockerfile: ./Dockerfile
     container_name: bank-service-app
     restart: on-failure
+    expose:
+      - "8091"
     ports:
       - "8091:8090"
-    networks:
-      - banknet
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb/bank?useUnicode=true&characterEncoding=utf8&useSSL=false
+      - WAIT_HOSTS=mysql:3306
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/bank_transaction?useUnicode=true&characterEncoding=utf8&useSSL=false
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=root
-#      - SPRING_DATASOURCE_PLATFORM=mysql
     depends_on:
       - mysqldb
 
   mysqldb:
+    container_name: mysqldb
     image: mysql
-    container_name: bank-service-mysql
     restart: always
     ports:
-      - "3306:3306"
-    networks:
-      - banknet
+      - "6033:3306"
     environment:
-      - MYSQL_ROOT_HOST='%'
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=bank
+      - MYSQL_DATABASE=bank_transaction
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+    volumes:
+      - db-data:/var/lib/mysql
     healthcheck:
       test: "/usr/bin/mysql --user=root --password=root --execute \"SHOW DATABASES;\""
       interval: 5s
       timeout: 20s
       retries: 10
 
-networks:
-  banknet:
-    driver: bridge
+# Volumes
+volumes:
+  db-data:

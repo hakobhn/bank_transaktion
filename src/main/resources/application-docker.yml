@@ -1,9 +1,9 @@
-spring:
-  ## Spring DATA SOURCE Configurations
-  datasource:
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
+#spring:
+#  # Spring DATA SOURCE Configurations
+#  datasource:
+#    url: ${SPRING_DATASOURCE_URL}
+#    username: ${SPRING_DATASOURCE_USERNAME}
+#    password: ${SPRING_DATASOURCE_PASSWORD}
 
 #Admin app admin user credentials
 root:
