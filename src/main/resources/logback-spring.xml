@@ -38,7 +38,7 @@
         <appender-ref ref="CONSOLE" />
     </root>
 
-    <!-- LOG "com.baeldung*" at TRACE level -->
+    <!-- LOG "am.neovision.admin.toolkit*" at TRACE level -->
     <logger name="am.neovision.admin.toolkit" level="trace" additivity="false">
         <appender-ref ref="FILE-ROLLING" />
         <appender-ref ref="CONSOLE" />
